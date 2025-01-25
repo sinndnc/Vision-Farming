@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Vision_FarmingApp: App {
+    
+    @UIApplicationDelegateAdaptor(VisionFarmingAppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
