@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseCore
 
 struct User : Codable {
     
@@ -19,7 +20,7 @@ struct User : Codable {
 }
 
 
-struct Field : Codable {
-    
+struct Field : Codable , Hashable{
+    var id : Int
     var coordinates : [GeoPoint]
 }

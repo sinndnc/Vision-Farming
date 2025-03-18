@@ -10,6 +10,7 @@
 		994E64112D400EAD00B7F884 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 994E64102D400EAD00B7F884 /* FirebaseAuth */; };
 		994E64132D400EAD00B7F884 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 994E64122D400EAD00B7F884 /* FirebaseFirestore */; };
 		994E64152D400EAD00B7F884 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 994E64142D400EAD00B7F884 /* FirebaseStorage */; };
+		9979F6C82D88F10C00A263C0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9979F6C72D88F10C00A263C0 /* BottomSheet */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +36,22 @@
 		99665C1E2D347E0E00FCF579 /* Vision-FarmingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Vision-FarmingUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		998824D72D8199FD00BBC924 /* Exceptions for "Vision-Farming" folder in "Vision-Farming" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 99665C032D347E0A00FCF579 /* Vision-Farming */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		99665C062D347E0A00FCF579 /* Vision-Farming */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				998824D72D8199FD00BBC924 /* Exceptions for "Vision-Farming" folder in "Vision-Farming" target */,
+			);
 			path = "Vision-Farming";
 			sourceTree = "<group>";
 		};
@@ -59,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				994E64112D400EAD00B7F884 /* FirebaseAuth in Frameworks */,
+				9979F6C82D88F10C00A263C0 /* BottomSheet in Frameworks */,
 				994E64132D400EAD00B7F884 /* FirebaseFirestore in Frameworks */,
 				994E64152D400EAD00B7F884 /* FirebaseStorage in Frameworks */,
 			);
@@ -124,6 +139,7 @@
 				994E64102D400EAD00B7F884 /* FirebaseAuth */,
 				994E64122D400EAD00B7F884 /* FirebaseFirestore */,
 				994E64142D400EAD00B7F884 /* FirebaseStorage */,
+				9979F6C72D88F10C00A263C0 /* BottomSheet */,
 			);
 			productName = "Vision-Farming";
 			productReference = 99665C042D347E0A00FCF579 /* Vision-Farming.app */;
@@ -209,6 +225,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				994E640F2D400EAD00B7F884 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9979F6C62D88F10C00A263C0 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 99665C052D347E0A00FCF579 /* Products */;
@@ -414,6 +431,7 @@
 				DEVELOPMENT_TEAM = A5PNFW5LM9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Vision-Farming/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -443,6 +461,7 @@
 				DEVELOPMENT_TEAM = A5PNFW5LM9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Vision-Farming/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -583,6 +602,14 @@
 				minimumVersion = 11.7.0;
 			};
 		};
+		9979F6C62D88F10C00A263C0 /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lucaszischka/BottomSheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -600,6 +627,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 994E640F2D400EAD00B7F884 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		9979F6C72D88F10C00A263C0 /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9979F6C62D88F10C00A263C0 /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

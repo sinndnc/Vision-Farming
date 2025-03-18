@@ -7,22 +7,11 @@
 
 import Foundation
 
-final class MapViewModel : ObservableObject {
+class MapViewModel : ObservableObject {
     
     @Inject private var userRepository : UserRepositoryProtocol
     
     @Published var user : User? = nil
-    
-   
-    func fetch() async {
-        do{
-            user = try await userRepository.fetch().get()
-        }
-        catch{
-            print(error)
-        }
-    }
-    
     
     
 }

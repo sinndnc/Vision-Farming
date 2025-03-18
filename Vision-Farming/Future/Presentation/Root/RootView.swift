@@ -6,36 +6,41 @@
 //
 
 import SwiftUI
-import Charts
+import BottomSheet
 
-
-fileprivate enum Section: Hashable {
+fileprivate enum TabEnum : Hashable {
     case qr
     case map
     case dashboard
     case account
+    case catalog
 }
 
 struct RootView: View {
     
-    @State private var selection : Section = .map
-    
+    @State private var selectedTab : TabEnum = .dashboard
+
     var body: some View {
-        TabView(selection: $selection ){
+        TabView(selection: $selectedTab){
             Tab("Dashboard", systemImage: "chart.pie.fill", value: .dashboard) {
                 DashboardView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Map", systemImage:"map.fill",value: .map){
                 MapView()
-            }
-            Tab("Add",systemImage: "plus.app",value: .qr){
-                Text("")
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Scan",systemImage: "qrcode.viewfinder",value: .qr){
-                Text("")
+                ScanView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+            }
+            Tab("Catalog",systemImage: "plus.app",value: .catalog){
+                CatalogView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Account", systemImage: "person.circle", value: .account) {
                 AccountView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
         }
     }

@@ -7,82 +7,30 @@
 
 import SwiftUI
 import MapKit
+import BottomSheet
 
 
 struct MapView: View {
     
+    @State private var mapStyle : MapStyle = .hybrid
+    @State private var selectedResult : Int?
+    @State private var settingSheet : Bool = false
+    @State private var position : MapCameraPosition = .automatic
     
-    @State var mapStyle : MapStyle = .hybrid
-    @State var SettingIsActive : Bool = false
-    @State var position : MapCameraPosition = .automatic
-    
-    @StateObject var viewModel : MapViewModel = .init()
-    
-    
+    @StateObject var viewModel : MapViewModel = MapViewModel()
+    @State private var bottomSheetPosition : BottomSheetPosition = .relative(0.175)
+
     var body: some View {
-        GeometryReader{ geoProxy in
-            NavigationStack{
-                ZStack{
-                    MapReader { mapProxy in
-                        Map(initialPosition: position){
-                            if let user = viewModel.user{
-                                
-                                ForEach(user.fields,id: \.self.coordinates) { field in
-                                    MapPolygon(coordinates: field.coordinates.toCLLocationCoordinate2D)
-                                        .stroke(.blue)
-                                        .foregroundStyle(.blue.opacity(0.4))
-                                    Marker(coordinate: field.coordinates.getCenterOfField()) {
-                                        Text("test")
-                                    }
-                                }
-                            }
-                        }
-                        .mapStyle(mapStyle)
-                    }
-                }
-                .toolbarBackground(.hidden, for: .navigationBar)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            SettingIsActive.toggle()
-                        } label: {
-                            Image(systemName: "slider.horizontal.3")
-                                .padding(7)
-                                .font(.subheadline)
-                                .background(.white)
-                                .clipShape(Circle())
-                        }
-                    }
+        Map()
+            .bottomSheet(
+                bottomSheetPosition: $bottomSheetPosition,
+                switchablePositions: [.relative(0.175),.relative(0.4)]) {
                     
-                    ToolbarItem(placement: .principal) {
-                        ZStack{
-                            TextField("Search Location", text: .constant(""))
-                                .padding(10)
-                                .font(.subheadline)
-                        }
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        
-                    }
                 }
-                .sheet(isPresented: $SettingIsActive) {
-                    NavigationStack{
-                        List{
-                            Toggle("Theme", isOn: .constant(.random()))
-                        }
-                        .listStyle(.insetGrouped)
-                        .navigationTitle("Filters")
-                        .presentationDetents([.medium])
-                        .presentationDragIndicator(.visible)
-                    }
-                }
-                .task {
-                    await viewModel.fetch()
-                }
-            }
-        }
+        
     }
 }
+
 
 #Preview {
     MapView()
