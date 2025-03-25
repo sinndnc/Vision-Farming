@@ -9,7 +9,7 @@ import SwiftUI
 import VisionKit
 
 @MainActor
-struct DocumentScannerView: UIViewControllerRepresentable {
+struct QRScannerView: UIViewControllerRepresentable {
     
     @Binding var recognizedItems: [RecognizedItem]
     
@@ -19,6 +19,7 @@ struct DocumentScannerView: UIViewControllerRepresentable {
     }
     
     static func dismantleUIViewController(_ uiViewController: DataScannerViewController, coordinator: Coordinator) {
+        print("dismantleUIViewController")
         uiViewController.stopScanning()
     }
       
@@ -58,9 +59,9 @@ struct DocumentScannerView: UIViewControllerRepresentable {
         }
         
         func dataScanner(_ dataScanner: DataScannerViewController, didRemove removedItems: [RecognizedItem], allItems: [RecognizedItem]) {
-            self.recognizedItems = recognizedItems.filter { item in
-                !removedItems.contains(where: {$0.id == item.id })
-            }
+//            self.recognizedItems = recognizedItems.filter { item in
+//                !removedItems.contains(where: {$0.id == item.id })
+//            }
             print("didRemovedItems \(removedItems)")
         }
         

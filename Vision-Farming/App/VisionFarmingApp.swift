@@ -12,10 +12,12 @@ import AVFoundation
 struct Vision_FarmingApp: App {
     
     @UIApplicationDelegateAdaptor(VisionFarmingAppDelegate.self) var delegate
+    @StateObject private var viewModel = AppearanceViewModel()
     
     var body: some Scene {
         WindowGroup {
             RootView()
+                .preferredColorScheme(viewModel.currentTheme.toColorScheme)
         }
     }
 }

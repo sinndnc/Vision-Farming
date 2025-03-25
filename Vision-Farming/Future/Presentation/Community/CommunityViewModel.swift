@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MapViewModel : ObservableObject {
+class CommunityViewModel : ObservableObject {
     
     @Inject private var userRepository : UserRepositoryProtocol
     

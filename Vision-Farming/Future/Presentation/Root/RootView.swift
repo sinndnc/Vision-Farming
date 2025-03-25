@@ -8,41 +8,39 @@
 import SwiftUI
 import BottomSheet
 
-fileprivate enum TabEnum : Hashable {
-    case qr
-    case map
-    case dashboard
-    case account
-    case catalog
-}
-
 struct RootView: View {
     
-    @State private var selectedTab : TabEnum = .dashboard
-
+    @StateObject var rootViewModel = RootViewModel()
+    
     var body: some View {
-        TabView(selection: $selectedTab){
+        TabView(selection: $rootViewModel.selectedTab){
             Tab("Dashboard", systemImage: "chart.pie.fill", value: .dashboard) {
                 DashboardView()
+                    .tag(TabEnum.dashboard)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
-            Tab("Map", systemImage:"map.fill",value: .map){
-                MapView()
+            Tab("Community", systemImage:"person.3.fill",value: .community){
+                CommunityView()
+                    .tag(TabEnum.community)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
-            Tab("Scan",systemImage: "qrcode.viewfinder",value: .qr){
+            Tab("Scan",systemImage: "qrcode.viewfinder",value: .scan){
                 ScanView()
+                    .tag(TabEnum.scan)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Catalog",systemImage: "plus.app",value: .catalog){
                 CatalogView()
+                    .tag(TabEnum.catalog)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Account", systemImage: "person.circle", value: .account) {
                 AccountView()
+                    .tag(TabEnum.account)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
         }
+        .environmentObject(rootViewModel)
     }
 }
 
