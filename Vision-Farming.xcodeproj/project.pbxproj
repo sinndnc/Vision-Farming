@@ -11,6 +11,7 @@
 		992981342D8A3AA000642AAE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 992981332D8A3AA000642AAE /* FirebaseCore */; };
 		992981362D8A3AA000642AAE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 992981352D8A3AA000642AAE /* FirebaseFirestore */; };
 		992981382D8A3AA000642AAE /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 992981372D8A3AA000642AAE /* FirebaseStorage */; };
+		995FF6882D97FC1B007E0D78 /* SlidingTabView in Frameworks */ = {isa = PBXBuildFile; productRef = 995FF6872D97FC1B007E0D78 /* SlidingTabView */; };
 		9979F6C82D88F10C00A263C0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9979F6C72D88F10C00A263C0 /* BottomSheet */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				995FF6882D97FC1B007E0D78 /* SlidingTabView in Frameworks */,
 				9979F6C82D88F10C00A263C0 /* BottomSheet in Frameworks */,
 				992981362D8A3AA000642AAE /* FirebaseFirestore in Frameworks */,
 				992981342D8A3AA000642AAE /* FirebaseCore in Frameworks */,
@@ -143,6 +145,7 @@
 				992981332D8A3AA000642AAE /* FirebaseCore */,
 				992981352D8A3AA000642AAE /* FirebaseFirestore */,
 				992981372D8A3AA000642AAE /* FirebaseStorage */,
+				995FF6872D97FC1B007E0D78 /* SlidingTabView */,
 			);
 			productName = "Vision-Farming";
 			productReference = 99665C042D347E0A00FCF579 /* Vision-Farming.app */;
@@ -229,6 +232,7 @@
 			packageReferences = (
 				9979F6C62D88F10C00A263C0 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				992981302D8A3AA000642AAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				995FF6862D97FC1B007E0D78 /* XCRemoteSwiftPackageReference "SlidingTabView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 99665C052D347E0A00FCF579 /* Products */;
@@ -338,6 +342,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -401,6 +406,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -429,6 +435,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Vision-Farming/Preview Content\"";
 				DEVELOPMENT_TEAM = A5PNFW5LM9;
@@ -459,6 +466,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				COREML_CODEGEN_SWIFT_GLOBAL_MODULE = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Vision-Farming/Preview Content\"";
 				DEVELOPMENT_TEAM = A5PNFW5LM9;
@@ -605,6 +613,14 @@
 				minimumVersion = 11.10.0;
 			};
 		};
+		995FF6862D97FC1B007E0D78 /* XCRemoteSwiftPackageReference "SlidingTabView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QuynhNguyen/SlidingTabView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 		9979F6C62D88F10C00A263C0 /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lucaszischka/BottomSheet";
@@ -635,6 +651,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 992981302D8A3AA000642AAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		995FF6872D97FC1B007E0D78 /* SlidingTabView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 995FF6862D97FC1B007E0D78 /* XCRemoteSwiftPackageReference "SlidingTabView" */;
+			productName = SlidingTabView;
 		};
 		9979F6C72D88F10C00A263C0 /* BottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;

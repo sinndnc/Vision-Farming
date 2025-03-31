@@ -15,56 +15,28 @@ struct AppearanceView: View {
     var body: some View {
         List {
             Section(header: Text("Appearance")) {
-                Label {
-                    HStack{
-                        Text("Theme")
-                        Spacer()
-                        Menu {
-                            VStack{
-                                ForEach(Theme.allCases,id: \.rawValue){ theme in
-                                    Button {
-                                        viewModel.setTheme(theme)
-                                    } label: {
-                                        Text("\(theme.rawValue.capitalized) Mode")
-                                    }
-                                }
-                            }
-                        } label: {
-                            Text(viewModel.currentTheme.rawValue.capitalized)
-                                .foregroundStyle(.gray)
-                            Image(systemName: "arrow.up.and.down")
-                                .foregroundStyle(.gray)
-                        }
+                Picker("Theme",selection: $viewModel.themeSetting) {
+                    ForEach(Theme.allCases,id: \.self){ theme in
+                        Text("\(theme.rawValue)")
+                            .font(.callout)
+                            .fontWeight(.medium)
                     }
-                } icon: {
-                    Image(systemName: "moon")
+                    .pickerStyle(.menu)
                 }
+                .font(.callout)
+                .fontWeight(.medium)
                 
-                Label {
-                    HStack{
-                        Text("Language")
-                        Spacer()
-                        Menu {
-                            VStack{
-                                ForEach(Language.allCases,id: \.rawValue){ language in
-                                    Button {
-                                        viewModel.setLanguage(language)
-                                    } label: {
-                                        Text("\(language.rawValue.capitalized)")
-                                    }
-                                }
-                            }
-                        } label: {
-                            Text(viewModel.currentLanguage.rawValue.capitalized)
-                                .foregroundStyle(.gray)
-                            Image(systemName: "arrow.up.and.down")
-                                .foregroundStyle(.gray)
-                        }
+                Picker("Language",selection: $viewModel.languageSetting) {
+                    ForEach(Language.allCases,id: \.self){ language in
+                        Text("\(language.rawValue)")
+                            .font(.callout)
+                            .fontWeight(.medium)
                     }
-                } icon: {
-                    Image(systemName: "translate")
+                    .pickerStyle(.navigationLink)
+                    
                 }
-               
+                .font(.callout)
+                .fontWeight(.medium)
             }
         }
         .navigationTitle("Appearance")
@@ -72,19 +44,6 @@ struct AppearanceView: View {
 }
 
 
-extension Theme{
-    
-    var toColorScheme : ColorScheme? {
-        switch self {
-        case .light:
-            return .light
-        case .dark:
-            return .dark
-        default:
-            return .none
-        }
-    }
-}
 
 #Preview {
     NavigationStack{

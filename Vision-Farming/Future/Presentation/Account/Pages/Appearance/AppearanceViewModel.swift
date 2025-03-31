@@ -12,7 +12,7 @@ import SwiftUI
 final class AppearanceViewModel : ObservableObject {
     
     @AppStorage("themeSetting") var themeSetting: Theme = .system
-    @AppStorage("languageSetting") var languageSetting: Language = .system
+    @AppStorage("languageSetting") var languageSetting: Language = .english
 
     var currentTheme: Theme {
         switch themeSetting {
@@ -26,7 +26,7 @@ final class AppearanceViewModel : ObservableObject {
         switch languageSetting {
         case .english : return .english
         case .turkish : return .turkish
-        default: return .system
+        case .spanish : return .spanish
         }
     }
         

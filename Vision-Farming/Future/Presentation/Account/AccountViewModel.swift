@@ -46,7 +46,7 @@ extension AccountViewModel{
      var about : [SectionItem] {
          let termsAndconditions = SectionItem(icon: "doc.fill", title: "Terms & Conditions",type: .terms)
          let privacyAndPolicy = SectionItem(icon: "hand.raised.fill", title: "Privacy & Policy",type: .privacy)
-        let aboutUs = SectionItem(icon: "figure.run", title: "About Us",type: .aboutUs)
+        let aboutUs = SectionItem(icon: "info.circle", title: "About Us",type: .aboutUs)
         return [termsAndconditions,privacyAndPolicy,aboutUs]
     }
     

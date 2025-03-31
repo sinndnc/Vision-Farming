@@ -6,10 +6,27 @@
 //
 
 import Foundation
+import SwiftUICore
 
 
 enum Theme : String, CaseIterable  {
-    case light
-    case dark
-    case system
+    case light = "Light"
+    case dark = "Dark"
+    case system = "System"
+}
+
+
+
+extension Theme{
+    
+    var toColorScheme : ColorScheme? {
+        switch self {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        default:
+            return .none
+        }
+    }
 }
