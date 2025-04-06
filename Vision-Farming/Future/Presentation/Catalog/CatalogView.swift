@@ -12,25 +12,30 @@ struct CatalogView: View {
     
     @StateObject var viewModel = CatalogViewModel()
     @EnvironmentObject var rootViewModel: RootViewModel
-
+    
     var body: some View {
         NavigationStack(path: $rootViewModel.navigationPath) {
             List(viewModel.categories) { category in
-                NavigationLink(destination: SubcategoriesView(category: category)) {
-                    VStack(alignment:.leading){
-                        Text("\(category.category_name)")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                        Text("\(category.category_description)")
-                            .font(.footnote)
-                            .lineLimit(3)
+                if (viewModel.isLoading){
+                    ProgressView()
+                }else{
+                    NavigationLink(destination: SubcategoriesView(category: category)) {
+                        VStack(alignment:.leading){
+                            Text("\(category.category_name)")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            Text("\(category.category_description)")
+                                .font(.footnote)
+                                .lineLimit(3)
+                        }
                     }
                 }
-                
             }
             .toolbar{toolbarContent}
             .navigationTitle("Categories")
-            .onAppear { viewModel.fetchPlants() }
+            .onAppear { viewModel.fetchCategories() }
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: .constant(""),prompt: "Search in catalog")
             .navigationDestination(for: String.self) { value in
                 if value == "ItemDetail" {
                     if let item = rootViewModel.selectedData {
@@ -60,6 +65,7 @@ struct CatalogView: View {
                 }
             }
             .navigationTitle(category.category_name)
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear{
                 viewModel.fetchSubcategories(category: category)
             }
@@ -85,6 +91,7 @@ struct CatalogView: View {
                 }
             }
             .navigationTitle(subCategory.name)
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 viewModel.fetchSubCategoryItems(category: category, subCategory: subCategory)
             }
@@ -126,6 +133,7 @@ struct CatalogView: View {
                 .headerProminence(.increased)
             }
             .navigationTitle(item.name)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 enum TabEnum : String {
-    case scan
+    case marketPlace
     case community
     case dashboard
     case account

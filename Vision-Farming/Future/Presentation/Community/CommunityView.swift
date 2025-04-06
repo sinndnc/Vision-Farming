@@ -17,74 +17,15 @@ struct CommunityView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0){
-                ZStack(alignment: .bottom){
-                    HStack{
-                        ForEach(CommunityTab.allCases,id: \.self){ tab in
-                            let selectedColor = viewModel.selectedTab == tab ? Color.black : Color.gray
-                            let selectedIndicator = viewModel.selectedTab == tab ? Color.blue : Color.clear
-                            
-                            VStack{
-                                Button {
-                                    withAnimation(.easeIn) {
-                                        viewModel.selectedTab = tab
-                                    }
-                                } label: {
-                                    Text(tab.rawValue)
-                                        .font(.subheadline)
-                                        .fontWeight(.medium)
-                                    
-                                }
-                                .tint(selectedColor)
-                                
-                                Rectangle()
-                                    .frame(height: 3)
-                                    .foregroundStyle(selectedIndicator)
-                                    .clipShape(Capsule())
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                    Divider()
-                }
-                .padding(.top,10)
-                .background(.white)
+                CommunityTabWidget(viewModel: viewModel)
                 
                 TabView(selection: $viewModel.selectedTab) {
-                    ScrollView{
-                        LazyVStack(spacing: 0){
-                            ForEach(1...5,id:\.self) { id in
-                                PostView()
-                                    .id(id)
-                                    .padding(.vertical, 7)
-                            }
-                        }
-                    }
-                    .padding(.horizontal,10)
-                    .tag(CommunityTab.trending)
-                    
-                    ScrollView{
-                        LazyVStack(spacing: 0){
-                            ForEach(1...3,id:\.self) { id in
-                                PostView()
-                                    .id(id)
-                                    .padding(5)
-                            }
-                        }
-                    }
-                    .padding(.horizontal,10)
-                    .tag(CommunityTab.forYou)
-                    
-                    ScrollView{
-                        LazyVStack(spacing: 0){
-                            ForEach(1...7,id:\.self) { id in
-                                PostView()
-                                    .id(id)
-                                    .padding(5)
-                            }
-                        }
-                    }
-                    .padding(.horizontal,10)
-                    .tag(CommunityTab.following)
+                    TrendingView()
+                        .tag(CommunityTab.trending)
+                    ForYouView()
+                        .tag(CommunityTab.forYou)
+                    FollowingView()
+                        .tag(CommunityTab.following)
                 }
                 .background(.gray.opacity(0.2))
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -114,13 +55,13 @@ struct CommunityView: View {
                         .padding()
                 }
                 .tint(.white)
-                .background(.gray)
-                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .background(.blue)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
             .padding()
         }
         .sheet(isPresented: $isExpanded) {
-            AIChatView()
+            ChatView()
         }
     }
 }

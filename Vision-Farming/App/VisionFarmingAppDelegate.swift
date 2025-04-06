@@ -33,7 +33,7 @@ extension VisionFarmingAppDelegate  {
         
         ServiceContainer.register(type: UserRepositoryProtocol.self, UserRepository())
         ServiceContainer.register(type: UserRemoteServiceProtocol.self, UserRemoteService(auth: auth,firestore: firestore))
-        
+        ServiceContainer.register(type: ChatBotServiceProtocol.self, ChatBotService())
         ServiceContainer.register(type: CatalogRemoteServiceProtocol.self, CatalogRemoteService(firestore: firestore))
         
     }

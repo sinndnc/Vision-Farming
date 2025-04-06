@@ -21,11 +21,10 @@ class CatalogViewModel: ObservableObject {
     var cancellables = Set<AnyCancellable>()
     @Inject var catalogService : CatalogRemoteServiceProtocol
     
-    func fetchPlants() {
+    func fetchCategories() {
         isLoading = true
         errorMessage = nil
-        
-        catalogService.fetchPlants()
+        catalogService.fetchCategories()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.isLoading = false
@@ -33,6 +32,7 @@ class CatalogViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { categories in
+                self.isLoading = false
                 self.categories = categories
             })
             .store(in: &cancellables)
@@ -51,6 +51,7 @@ class CatalogViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { subCategories in
+                self.isLoading = false
                 self.subCategories = subCategories
             })
             .store(in: &cancellables)
@@ -68,11 +69,9 @@ class CatalogViewModel: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { categoryItems in
+                self.isLoading = false
                 self.categoryItems = categoryItems
             })
             .store(in: &cancellables)
     }
-    
-   
 }
-

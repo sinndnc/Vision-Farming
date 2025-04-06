@@ -17,7 +17,7 @@ final class CatalogRemoteService : CatalogRemoteServiceProtocol {
         self.firestore = firestore
     }
     
-    func fetchPlants() -> AnyPublisher<[Category], Error> {
+    func fetchCategories() -> AnyPublisher<[Category], Error> {
         let subject = PassthroughSubject<[Category], Error>()
         
         firestore.collection("PLANTS").getDocuments { snapshot, error in

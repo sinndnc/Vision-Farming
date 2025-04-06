@@ -116,6 +116,7 @@ struct AccountView: View {
                 .headerProminence(.increased)
             }
             .navigationTitle(Text("Account"))
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: SectionType.self) { type in
                 switch type {
                 case .notifications:

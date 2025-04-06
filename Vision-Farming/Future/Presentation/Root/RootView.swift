@@ -24,9 +24,9 @@ struct RootView: View {
                     .tag(TabEnum.community)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
-            Tab("Scan",systemImage: "qrcode.viewfinder",value: .scan){
-                ScanView()
-                    .tag(TabEnum.scan)
+            Tab("Market Place",systemImage: "cart.badge.plus",value: .marketPlace){
+                MarketPlaceView()
+                    .tag(TabEnum.marketPlace)
                     .toolbarBackgroundVisibility(.visible, for: .tabBar)
             }
             Tab("Catalog",systemImage: "plus.app",value: .catalog){

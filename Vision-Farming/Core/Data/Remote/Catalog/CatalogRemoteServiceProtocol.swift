@@ -14,7 +14,7 @@ protocol CatalogRemoteServiceProtocol {
     
     var firestore : Firestore { get }
     
-    func fetchPlants() -> AnyPublisher<[Category], Error>
+    func fetchCategories() -> AnyPublisher<[Category], Error>
     
     func fetchSubcategories(category: Category) -> AnyPublisher<[SubCategory], Error>
     
