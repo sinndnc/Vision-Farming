@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NaturalLanguage
 
 final class ChatViewModel : ObservableObject {
      
@@ -27,48 +28,30 @@ final class ChatViewModel : ObservableObject {
     func addMessage() {
         
         if textfield.checkEmpty { return }
-        
+        analyzeSentence(textfield)
         self.messages.append(ChatMessage(text: textfield,isUser: true))
-        self.textfield = ""
         
-        sendMessageToService()
+        self.textfield = ""
+
     }
     
-    func sendMessageToService(){
-        let (leafYellowing, brownSpots, fruitRot, stemCracking, leafCurling, rootRot, whiteMold, blackSpotsOnFruit) = convertTextToFeatures(text: textfield)
+    
+    func analyzeSentence(_ sentence: String) {
+        let tagger = NLTagger(tagSchemes: [.lexicalClass])
+        tagger.string = sentence
         
-        let response = aIChatBotService.getChatBotResponse(
-            leafYellowing: leafYellowing,
-            brownSpots: brownSpots,
-            fruitRot: fruitRot,
-            stemCracking: stemCracking,
-            leafCurling: leafCurling,
-            rootRot: rootRot,
-            whiteMold: whiteMold,
-            blackSpotsOnFruit: blackSpotsOnFruit
-        )
-        
-        if let response = response {
-            self.messages.append(ChatMessage(text: response, isUser: false))
-           
+        tagger.enumerateTags(
+            in: sentence.startIndex..<sentence.endIndex,
+            unit: .word,
+            scheme: .lexicalClass
+        ) { tag, tokenRange in
+            if let tag = tag {
+                print("\(sentence[tokenRange]): \(tag.rawValue)")
+            }
+            return true
         }
     }
     
-    func convertTextToFeatures(text: String) -> (Int, Int, Int, Int, Int, Int, Int, Int) {
-        
-        let lowercasedText = text.lowercased()
-        
-        let leafYellowing = lowercasedText.contains("yaprak sararması") ? 1 : 0
-        let brownSpots = lowercasedText.contains("kahverengi lekeler") ? 1 : 0
-        let fruitRot = lowercasedText.contains("meyve çürüğü") ? 1 : 0
-        let stemCracking = lowercasedText.contains("gövde çatlaması") ? 1 : 0
-        let leafCurling = lowercasedText.contains("yaprak kıvrılması") ? 1 : 0
-        let rootRot = lowercasedText.contains("kök çürümesi") ? 1 : 0
-        let whiteMold = lowercasedText.contains("beyaz küf") ? 1 : 0
-        let blackSpotsOnFruit = lowercasedText.contains("meyvede siyah lekeler") ? 1 : 0
-        
-        return (leafYellowing, brownSpots, fruitRot, stemCracking, leafCurling, rootRot, whiteMold, blackSpotsOnFruit)
-    }
     
 }
 
@@ -83,6 +66,9 @@ extension String {
 extension ChatViewModel {
     
     var initalMessage : ChatMessage {
-        ChatMessage(text: "Hi welcome to the AI Chat App, I am your virtual assistant. How can I help you today?",isUser: false)
+        ChatMessage(
+            text: "Hi welcome to the AI Chat App, I am your virtual assistant. How can I help you today?",
+            isUser: false
+        )
     }
 }

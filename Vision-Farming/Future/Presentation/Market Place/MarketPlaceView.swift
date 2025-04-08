@@ -9,6 +9,9 @@ import SwiftUI
 
 struct MarketPlaceView: View {
     
+    @State private var isScanViewOpenned : Bool = false
+    @State private var isProductViewOpenned : Bool = false
+    
     @StateObject private var viewModel = MarketPlaceViewModel()
     
     var body: some View {
@@ -25,6 +28,37 @@ struct MarketPlaceView: View {
                 .navigationTitle("Market")
                 .navigationBarTitleDisplayMode(.inline)
                 .searchable(text: .constant(""), prompt: "Search Market")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            isScanViewOpenned.toggle()
+                        } label: {
+                            Image(systemName: "qrcode.viewfinder")
+                        }
+                        .tint(.black)
+                    }
+                }
+                .safeAreaInset(edge: .bottom){
+                    HStack{
+                        Spacer()
+                        Button{
+                            isProductViewOpenned.toggle()
+                        }label: {
+                            Image(systemName: "plus")
+                                .padding()
+                        }
+                        .tint(.white)
+                        .background(.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .padding()
+                }
+                .sheet(isPresented: $isProductViewOpenned){
+                    UploadProductView()
+                }
+                .sheet(isPresented: $isScanViewOpenned) {
+                    ScanView()
+                }
             }
         }
     }

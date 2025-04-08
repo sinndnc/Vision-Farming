@@ -23,10 +23,10 @@ extension AccountViewModel{
         let appearance = SectionItem(icon: "slider.vertical.3", title: "Appearance", type: .appearance)
         let notificationsAndWarnings = SectionItem(icon: "bell", title: "Notifications", type: .notifications)
         let sensors = SectionItem(icon: "antenna.radiowaves.left.and.right", title: "IoT Sensors", type: .iotSensors)
+        let myCrops = SectionItem(icon: "leaf", title: "My Crops", type: .myCrops)
         
-        return [appearance,notificationsAndWarnings,sensors]
+        return [appearance,notificationsAndWarnings,sensors,myCrops]
     }
-    
     
     var data : [SectionItem] {
         let trackingAndManagement = SectionItem(icon: "list.bullet.clipboard", title: "Tracking Management", type: .tracking)

@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-struct PostView: View {
+struct PostComponent: View {
+    
+    let post : Post
+    
     var body: some View {
         VStack(spacing: 15){
             HStack{
-                Image(systemName: "world")
+                Image(systemName: "house")
                     .resizable()
                     .frame(width: 50,height: 50)
                     .background(.green)
@@ -26,7 +29,7 @@ struct PostView: View {
                 Spacer()
                 Image(systemName:"ellipsis")
             }
-            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries")
+            Text(post.content)
                 .font(.callout)
             
             HStack(spacing:20){
@@ -63,5 +66,18 @@ struct PostView: View {
 }
 
 #Preview {
-    PostView()
+    PostComponent(
+        post: Post(
+            title: "",
+            content: "",
+            authorId: "",
+            authorName: "",
+            category: "",
+            tags: [""],
+            likesCount: 1,
+            commentsCount: 1,
+            isPublished: true,
+            visibility: ""
+        )
+    )
 }

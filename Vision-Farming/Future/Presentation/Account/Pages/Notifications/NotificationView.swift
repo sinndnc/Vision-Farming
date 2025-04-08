@@ -85,7 +85,7 @@ struct NotificationView: View {
             }
             
         }
-        .navigationTitle(Text("Notifications"))
+        .navigationTitle("Notifications")
     }
 }
 

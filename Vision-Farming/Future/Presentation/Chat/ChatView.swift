@@ -56,7 +56,8 @@ struct ChatView : View , KeyboardReadable {
                         .scrollTargetLayout()
                     }
                     .onTapGesture{ isFocused.toggle()}
-                    .scrollPosition($scrollPosition, anchor: .top)
+                    .scrollTargetBehavior(.viewAligned)
+                    .scrollPosition($scrollPosition,anchor: .bottom)
                     .onAppear { scrollPosition.scrollTo(edge: .bottom) }
                     .onScrollTargetVisibilityChange(idType: ChatMessage.ID.self, { messages in
                         guard let lastMessageId = messages.last else { return }

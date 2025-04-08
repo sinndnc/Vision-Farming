@@ -16,14 +16,27 @@ struct ScanView :  View {
     @StateObject private var viewModel = ScanViewModel()
     @State private var bottomSheetPosition : BottomSheetPosition = .relative(0.4)
     
+    init() {
+    }
+    
     var body : some View {
-        
-        QRScannerView(recognizedItems: $viewModel.recognizedItems)
+        NavigationStack{
+            
+            QRScannerView(
+                recognizedItems: $viewModel.recognizedItems
+            )
             .bottomSheet(
                 bottomSheetPosition: $bottomSheetPosition,
-                switchablePositions: [.relative(0.175),.relative(0.4)]) {
-                    bottomContainerView
-                }
+                switchablePositions: [.relative(0.175),.relative(0.4)]
+            ){
+                bottomContainerView
+            }
+            .ignoresSafeArea()
+            .navigationTitle("Scan")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.clear)
+            .toolbarBackground(.visible, for: .navigationBar)
+        }
     }
     
     @ViewBuilder

@@ -11,37 +11,39 @@ import SlidingTabView
 
 struct CommunityView: View {
     
+    @State private var isPresented: Bool = false
     @StateObject var viewModel : CommunityViewModel = CommunityViewModel()
-    @State  var isExpanded: Bool = false
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0){
                 CommunityTabWidget(viewModel: viewModel)
-                
                 TabView(selection: $viewModel.selectedTab) {
-                    TrendingView()
+                    TrendingPage(viewModel: viewModel)
                         .tag(CommunityTab.trending)
-                    ForYouView()
+                    ForYouPage()
                         .tag(CommunityTab.forYou)
-                    FollowingView()
+                    FollowingPage()
                         .tag(CommunityTab.following)
                 }
                 .background(.gray.opacity(0.2))
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .never))
             }
+            .onAppear{ viewModel.getPosts() }
             .navigationTitle("Community")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button{
-                        
-                    }label:{
-                        Image(systemName: "line.3.horizontal.decrease")
-                            .font(.subheadline)
+                    HStack {
+                        Button{
+                            
+                        }label:{
+                            Image(systemName: "bell")
+                                .font(.footnote)
+                        }
+                        .tint(.black)
                     }
-                    .tint(.black)
                 }
             }
         }
@@ -49,23 +51,22 @@ struct CommunityView: View {
             HStack{
                 Spacer()
                 Button{
-                    isExpanded.toggle()
+                    isPresented.toggle()
                 }label: {
-                    Image(systemName: "brain.head.profile")
+                    Image(systemName: "plus")
                         .padding()
                 }
                 .tint(.white)
                 .background(.blue)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding()
         }
-        .sheet(isPresented: $isExpanded) {
-            ChatView()
+        .sheet(isPresented: $isPresented) {
+            UploadPostView()
         }
     }
 }
-
 
 #Preview {
     NavigationStack{

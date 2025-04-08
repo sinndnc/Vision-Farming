@@ -25,10 +25,16 @@ struct DashboardView: View {
                 .navigationTitle(Text("Dashboard"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    Button{
-                        
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
+                    ToolbarItem(placement: .topBarLeading) {
+                        NavigationLink{
+                            AccountView()
+                        } label:{
+                            Image(systemName: "person")
+                                .padding(10)
+                                .background(.gray.opacity(0.2))
+                                .clipShape(Circle())
+                        }
+                        .tint(.black)
                     }
                 }
             }

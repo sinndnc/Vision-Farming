@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct TrendingView: View {
+struct TrendingPage: View {
+    
+    @StateObject var viewModel : CommunityViewModel
+    
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(1...5,id:\.self) { id in
-                    PostView()
-                        .id(id)
+                ForEach(viewModel.posts,id:\.self) { post in
+                    PostComponent(post: post)
                         .padding(.vertical, 7)
+                        .id(post.content.hashValue)
                 }
             }
         }
@@ -23,5 +26,5 @@ struct TrendingView: View {
 }
 
 #Preview {
-    TrendingView()
+    TrendingPage(viewModel: .init())
 }

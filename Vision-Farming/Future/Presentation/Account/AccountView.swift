@@ -10,7 +10,7 @@ import SwiftUI
 
 
 enum SectionType {
-    case appearance, notifications, iotSensors, blockchain, tracking, cooperative, supplyChain, recommendations,smartAlert, terms, privacy, aboutUs
+    case appearance, notifications, iotSensors, myCrops , blockchain, tracking, cooperative, supplyChain, recommendations,smartAlert, terms, privacy, aboutUs
 }
 struct SectionItem : Identifiable {
     var id = UUID()
@@ -125,6 +125,8 @@ struct AccountView: View {
                     AppearanceView()
                 case .iotSensors:
                     SensorsView()
+                case .myCrops:
+                    MyCropsView()
                 case .blockchain:
                     BlockchainView()
                 case .tracking:

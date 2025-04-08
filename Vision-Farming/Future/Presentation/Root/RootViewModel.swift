@@ -13,7 +13,7 @@ enum TabEnum : String {
     case marketPlace
     case community
     case dashboard
-    case account
+    case calendar
     case catalog
 }
 
