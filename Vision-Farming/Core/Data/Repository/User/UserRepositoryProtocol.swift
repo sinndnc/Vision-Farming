@@ -12,5 +12,5 @@ protocol UserRepositoryProtocol {
     
     var isLogged : Bool { get }
     
-    func fetch() async -> Result<User?,UserErrorCallback>
+    func fetch() async -> Result<User,UserErrorCallback>
 }

@@ -57,7 +57,7 @@ struct CommunityView: View {
                         .padding()
                 }
                 .tint(.white)
-                .background(.blue)
+                .background(.green)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding()

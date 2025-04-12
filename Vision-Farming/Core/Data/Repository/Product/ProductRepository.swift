@@ -13,21 +13,21 @@ class ProductRepository : ProductRepositoryProtocol {
     private let db = Firestore.firestore()
     private let collection = "products"
     
-    func getAllProducts() -> AnyPublisher<[Product], Error> {
+    func getAllProducts() -> AnyPublisher<[MarketProduct], Error> {
         let ref = db.collection(collection)
         return Future { promise in
             ref.getDocuments { snapshot, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
-                    let products = snapshot?.documents.compactMap { try? $0.data(as: Product.self) } ?? []
+                    let products = snapshot?.documents.compactMap { try? $0.data(as: MarketProduct.self) } ?? []
                     promise(.success(products))
                 }
             }
         }.eraseToAnyPublisher()
     }
     
-    func addProduct(_ product: Product) -> AnyPublisher<Void, Error> {
+    func addProduct(_ product: MarketProduct) -> AnyPublisher<Void, Error> {
         let ref = db.collection(collection).document(product.id ?? UUID().uuidString)
         return Future { promise in
             do {
@@ -44,7 +44,7 @@ class ProductRepository : ProductRepositoryProtocol {
         }.eraseToAnyPublisher()
     }
     
-    func updateProduct(_ product: Product) -> AnyPublisher<Void, Error> {
+    func updateProduct(_ product: MarketProduct) -> AnyPublisher<Void, Error> {
         guard let id = product.id else {
             return Fail(error: NSError(domain: "ProductRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Product ID is missing"])).eraseToAnyPublisher()
         }

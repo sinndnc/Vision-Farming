@@ -10,7 +10,20 @@ import SwiftUI
 
 
 enum SectionType {
-    case appearance, notifications, iotSensors, myCrops , blockchain, tracking, cooperative, supplyChain, recommendations,smartAlert, terms, privacy, aboutUs
+    case appearance
+    case notifications
+    case iotSensors
+    case myCrops
+    case blockchain
+    case tracking
+    case cooperative
+    case supplyChain
+    case recommendations
+    case smartAlert
+    case terms
+    case privacy
+    case aboutUs
+    case myFields
 }
 struct SectionItem : Identifiable {
     var id = UUID()
@@ -22,7 +35,7 @@ struct SectionItem : Identifiable {
 
 struct AccountView: View {
     
-    @StateObject private var viewModel : AccountViewModel = AccountViewModel()
+    @StateObject private var viewModel : AccountViewModel = .init()
     
     var body: some View{
         NavigationStack(path: $viewModel.navigationPath){
@@ -44,21 +57,21 @@ struct AccountView: View {
                         
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
-                                Text("Çiftlik Adı:")
+                                Text("Farming name:")
                                     .fontWeight(.medium)
                                 Spacer()
-                                Text("Yeşil Tarım Çiftliği")
+                                Text("")
                                     .font(.callout)
                             }
                             HStack {
-                                Text("Konum:")
+                                Text("Location:")
                                     .fontWeight(.medium)
                                 Spacer()
                                 Text("Konya, Türkiye")
                                     .font(.callout)
                             }
                             HStack {
-                                Text("Üyelik Tipi:")
+                                Text("Account type:")
                                     .fontWeight(.medium)
                                 Spacer()
                                 Text("Premium")
@@ -115,6 +128,12 @@ struct AccountView: View {
                 }
                 .headerProminence(.increased)
             }
+            .task{
+                let user = await viewModel.getUser()
+                viewModel.farms = user.farms
+                viewModel.fields = user.fields
+                viewModel.sensors = user.sensors
+            }
             .navigationTitle(Text("Account"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: SectionType.self) { type in
@@ -124,7 +143,7 @@ struct AccountView: View {
                 case .appearance:
                     AppearanceView()
                 case .iotSensors:
-                    SensorsView()
+                    SensorsView(fields: viewModel.fields, sensors: viewModel.sensors)
                 case .myCrops:
                     MyCropsView()
                 case .blockchain:
@@ -139,6 +158,8 @@ struct AccountView: View {
                     RecommendationsView()
                 case .smartAlert:
                     SmartAlertView()
+                case .myFields:
+                    MyFieldsView(fields: viewModel.fields)
                 default:
                     Text("404 not found")
                 }

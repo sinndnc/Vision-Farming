@@ -17,6 +17,12 @@ protocol UserRemoteServiceProtocol{
       
     var auth : FirebaseAuth.Auth { get }
     
-    func fetch() async throws ->  Result<User,UserErrorCallback>
+    func fetchUser(of uid: String) async throws ->  Result<UserDTO,UserErrorCallback>
     
+    func fetchFarms(of owner_uid: String) async throws -> Result<[Farm], UserErrorCallback>
+    
+    func fetchFields(of owner_farm: String) async throws -> Result<[Field], UserErrorCallback>
+    
+    func fetchSensors(of owner_field: String) async throws -> Result<[Sensor], UserErrorCallback>
+
 }

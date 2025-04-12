@@ -19,7 +19,7 @@ enum TabEnum : String {
 
 class RootViewModel: ObservableObject {
     
-    @Published var selectedTab: TabEnum = .community
+    @Published var selectedTab: TabEnum = .calendar
     @Published var selectedData: CategoryItem? = nil
     @Published var navigationPath = NavigationPath()
     

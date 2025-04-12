@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import CoreLocation
 
-struct Product: Identifiable, Codable {
+struct MarketProduct: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String
     var description: String
@@ -33,3 +33,4 @@ struct Product: Identifiable, Codable {
     
     var location: GeoPoint?
 }
+

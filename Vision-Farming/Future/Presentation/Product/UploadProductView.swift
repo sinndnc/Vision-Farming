@@ -5,6 +5,7 @@
 //  Created by Sinan Dinç on 4/9/25.
 //
 
+import Foundation
 import SwiftUI
 
 struct UploadProductView: View {

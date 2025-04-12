@@ -15,13 +15,13 @@ class ProductCacheService {
         self.context = context
     }
 
-    func loadCachedProducts() -> [Product] {
+    func loadCachedProducts() -> [MarketProduct] {
 //        let request: NSFetchRequest<CachedProduct> = CachedProduct.fetchRequest()
 //        guard let cached = try? context.fetch(request) else { return [] }
         return []
     }
 
-    func cacheProducts(_ products: [Product]) {
+    func cacheProducts(_ products: [MarketProduct]) {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CachedProduct.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         try? context.execute(deleteRequest)

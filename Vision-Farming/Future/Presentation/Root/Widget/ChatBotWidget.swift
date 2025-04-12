@@ -25,7 +25,7 @@ struct ChatBotWidget: View {
                 height: viewSize.height
             )
             .foregroundStyle(.white)
-            .background(isDragging || isTaping ? .blue : .blue.opacity(0.5))
+            .background(isDragging || isTaping ? .green : .green.opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .offset(
                 x: currentOffset.width + dragOffset.width,

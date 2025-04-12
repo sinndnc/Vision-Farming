@@ -15,7 +15,6 @@ struct RootView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            
             TabView(selection: $rootViewModel.selectedTab){
                 Tab("Dashboard", systemImage: "chart.xyaxis.line", value: .dashboard) {
                     DashboardView()
@@ -38,7 +37,8 @@ struct RootView: View {
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }
                 Tab("Calendar", systemImage: "calendar", value: .calendar) {
-                    CalendarView()
+                    /*CalendarView()*/
+                      AccountView()
                         .tag(TabEnum.calendar)
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }

@@ -12,12 +12,11 @@ import VisionKit
 
 struct ScanView :  View {
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var rootViewModel : RootViewModel
     @StateObject private var viewModel = ScanViewModel()
-    @State private var bottomSheetPosition : BottomSheetPosition = .relative(0.4)
+    @State private var bottomSheetPosition : BottomSheetPosition = .relative(0.35)
     
-    init() {
-    }
     
     var body : some View {
         NavigationStack{
@@ -27,7 +26,7 @@ struct ScanView :  View {
             )
             .bottomSheet(
                 bottomSheetPosition: $bottomSheetPosition,
-                switchablePositions: [.relative(0.175),.relative(0.4)]
+                switchablePositions: [.relative(0.1),.relative(0.35)]
             ){
                 bottomContainerView
             }
@@ -41,7 +40,7 @@ struct ScanView :  View {
     
     @ViewBuilder
     private var bottomContainerView : some View {
-        VStack {
+        VStack() {
             if let item = viewModel.recognizedItems.last {
                 switch item {
                 case .barcode(let barcode):
@@ -52,58 +51,105 @@ struct ScanView :  View {
                     Text("Unknown")
                 }
             }else{
-                VStack(alignment: .leading){
-                    HStack {
-                        Text("Scanned barcode:")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                        Spacer()
-                    }
-                    HStack{
-                        Image(systemName: "airtag.radiowaves.forward.fill")
-                            .frame(width: 50,height: 50)
-                            .background(.green.opacity(0.7))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        Text("Tomato")
-                            .onTapGesture {
-                                let data = "kICWYtCUK7JTTpZIFpiW/mTrSeaOAHNG62VXnJoCX/NHQe3YM6LNLKkvOT8kRK"
-                                rootViewModel.navigateToTab(.catalog, with: data)
-                            }
-                    }
-                }
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity)
-                    
-                   
+                barcodeView()
+                
 //                Text("scanned QR code will be appear here")
 //                    .font(.subheadline)
 //                    .fontWeight(.semibold)
 //                    .foregroundStyle(.gray)
-//                    .onTapGesture {
-//                        rootViewModel.navigateToTab(.catalog,with: Category(name: "Sebzeler", products: [
-//                            Product(name: "Domates", description: "Taze kırmızı domates"),
-//                            Product(name: "Salatalık", description: "Doğal bahçe salatalığı")
-//                        ]))
-//                    }
             }
         }
     }
     
     @ViewBuilder
-    private func barcodeView(barcode : RecognizedItem.Barcode) -> some View {
+    private func barcodeView(barcode : RecognizedItem.Barcode? = nil) -> some View {
         VStack(alignment: .leading){
-            Text(barcode.payloadStringValue ?? "Unknown barcode")
-                .font(.title)
-                .fontWeight(.semibold)
+            HStack {
+                Text("Scanned Details:")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                Spacer()
+            }
+            HStack(alignment: .top){
+                Image(systemName: "plant")
+                    .frame(width: 75,height: 75)
+                    .background(.green.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                VStack(alignment:.leading){
+                    Text("Vegetables")
+                        .fontWeight(.semibold)
+                    Text("Tomato")
+                        .fontWeight(.semibold)
+                }
+                Spacer()
+                NavigationLink {
+                    ScanDetailView()
+                } label: {
+                    Text("Show More")
+                        .padding(.vertical,5)
+                        .padding(.horizontal)
+                        .background(.yellow)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .clipShape(Capsule())
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.gray, lineWidth: 1)
+                        }
+                }
+                .frame(height: 75)
+//                    dismiss()
+//                    let data = "kICWYtCUK7JTTpZIFpiW/mTrSeaOAHNG62VXnJoCX/NHQe3YM6LNLKkvOT8kRK"
+//                    rootViewModel.navigateToTab(.catalog, with: data)
+            }
+            HStack{
+                Text("Manufacturer:")
+                    .fontWeight(.semibold)
+                Text("ULKER AŞ.")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+            }
+            HStack{
+                Text("Field:")
+                    .fontWeight(.semibold)
+                Text("Afyon-Sivrihisar Ulker Çiftlikleri")
+                    .font(.callout)
+                    .fontWeight(.medium)
+            }
+            HStack {
+                Text("Part no:")
+                    .fontWeight(.semibold)
+                Text("100-440-0.750-3434-A")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+            }
+            HStack{
+                Text("Barcode:")
+                    .fontWeight(.semibold)
+                Text("C0424PP-PN-HSC0424PP")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+            }
+            HStack{
+                Text("Blockchain Hash:")
+                    .fontWeight(.semibold)
+                Text("0xff8c9dafe4e9aef9dfeeb71ca4fc59f42bccc56cc85c024a3b13719587b7866b")
+                    .lineLimit(1)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .truncationMode(.middle)
+            }
         }
-        .frame(maxWidth: .infinity)
-        
+        .padding(.horizontal)
+        .safeAreaPadding(.bottom)
+        .frame(maxWidth: .infinity,maxHeight: .infinity)
     }
 }
 
-
-struct ScanView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    NavigationStack{
         ScanView()
     }
 }
