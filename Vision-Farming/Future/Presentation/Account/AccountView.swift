@@ -14,6 +14,7 @@ enum SectionType {
     case notifications
     case iotSensors
     case myCrops
+    case myFarms
     case blockchain
     case tracking
     case cooperative
@@ -41,49 +42,28 @@ struct AccountView: View {
         NavigationStack(path: $viewModel.navigationPath){
             List{
                 Section{
-                    VStack {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 75, height: 75)
-                            .foregroundColor(.green)
-                        Text("Sinan Dinç")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        Text("sinandinc77@icloud.com")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        
-                        Divider()
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            HStack {
-                                Text("Farming name:")
-                                    .fontWeight(.medium)
-                                Spacer()
-                                Text("")
-                                    .font(.callout)
-                            }
-                            HStack {
-                                Text("Location:")
-                                    .fontWeight(.medium)
-                                Spacer()
-                                Text("Konya, Türkiye")
-                                    .font(.callout)
-                            }
-                            HStack {
-                                Text("Account type:")
-                                    .fontWeight(.medium)
-                                Spacer()
-                                Text("Premium")
-                                    .font(.callout)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.green)
+                    NavigationLink{
+                    }label:{
+                        HStack{
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.green)
+                            VStack(alignment:.leading) {
+                                if let user = viewModel.user{
+                                    Text("\(user.name) \(user.surname)")
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                    Text(user.email)
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }else{
+                                    ProgressView()
+                                }
                             }
                         }
-                        .padding()
                     }
                 }
-                .headerProminence(.increased)
                 
                 Section{
                     ForEach(viewModel.general) { section in
@@ -128,24 +108,22 @@ struct AccountView: View {
                 }
                 .headerProminence(.increased)
             }
-            .task{
-                let user = await viewModel.getUser()
-                viewModel.farms = user.farms
-                viewModel.fields = user.fields
-                viewModel.sensors = user.sensors
-            }
-            .navigationTitle(Text("Account"))
+            .navigationTitle("Account")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: SectionType.self) { type in
                 switch type {
-                case .notifications:
-                    NotificationView()
+                case .myCrops:
+                    CropsView(viewModel: viewModel)
+                case .myFarms:
+                    FarmsView(viewModel: viewModel)
+                case .myFields:
+                    FieldsView(viewModel: viewModel)
+                case .iotSensors:
+                    SensorsView(viewModel: viewModel)
                 case .appearance:
                     AppearanceView()
-                case .iotSensors:
-                    SensorsView(fields: viewModel.fields, sensors: viewModel.sensors)
-                case .myCrops:
-                    MyCropsView()
+                case .notifications:
+                    NotificationView()
                 case .blockchain:
                     BlockchainView()
                 case .tracking:
@@ -158,8 +136,6 @@ struct AccountView: View {
                     RecommendationsView()
                 case .smartAlert:
                     SmartAlertView()
-                case .myFields:
-                    MyFieldsView(fields: viewModel.fields)
                 default:
                     Text("404 not found")
                 }

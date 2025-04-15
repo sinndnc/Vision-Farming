@@ -8,8 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-struct Farm : Codable , Hashable{
-    var uid : String
+struct Farm : FirestoreEntity {
+    @DocumentID var id : String?
     var name : String
     var owner_uid : String
     var location : GeoPoint

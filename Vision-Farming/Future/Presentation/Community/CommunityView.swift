@@ -13,7 +13,7 @@ struct CommunityView: View {
     
     @State private var isPresented: Bool = false
     @StateObject var viewModel : CommunityViewModel = CommunityViewModel()
-
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0){
@@ -21,16 +21,15 @@ struct CommunityView: View {
                 TabView(selection: $viewModel.selectedTab) {
                     TrendingPage(viewModel: viewModel)
                         .tag(CommunityTab.trending)
-                    ForYouPage()
+                    ForYouPage(viewModel: viewModel)
                         .tag(CommunityTab.forYou)
-                    FollowingPage()
+                    FollowingPage(viewModel: viewModel)
                         .tag(CommunityTab.following)
                 }
                 .background(.gray.opacity(0.2))
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .indexViewStyle(.page(backgroundDisplayMode: .never))
             }
-            .onAppear{ viewModel.getPosts() }
             .navigationTitle("Community")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -63,7 +62,7 @@ struct CommunityView: View {
             .padding()
         }
         .sheet(isPresented: $isPresented) {
-            UploadPostView()
+            AddPostView()
         }
     }
 }

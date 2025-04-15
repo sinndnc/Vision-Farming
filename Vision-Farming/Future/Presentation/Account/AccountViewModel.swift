@@ -8,30 +8,92 @@
 import Foundation
 import SwiftUI
 import FirebaseAuth
+import Combine
+import CoreData
 
 
 final class AccountViewModel : ObservableObject {
     
-    @Published public var farms : [Farm] = []
-    @Published public var fields : [Farm : [Field]] = [:]
-    @Published public var sensors : [Field : [Sensor]] = [:]
+    @Published public var user: User?
+    @Published public var farms: [Farm] = []
+    @Published public var crops : [Crop] = []
+    @Published public var fields: [Field] = []
+    @Published public var sensors: [Sensor] = []
+    
     @Published public var sections : [SectionItem] = []
     @Published public var navigationPath = NavigationPath()
+   
+    private let userRepo: UserRepository
+    private let cropRepo: CropRepository
+    private let farmRepo: FarmRepository
+    private let fieldRepo: FieldRepository
+    private let sensorRepo: SensorRepository
+    private var cancellables = Set<AnyCancellable>()
     
-    @Inject  var userRepository : UserRepositoryProtocol
-    
-    func getUser() async -> User {
-        let result = await userRepository.fetch()
-        switch result {
-        case .success(let user):
-            return user
-        case .failure(_):
-            return User(uid: "", name: "", role: "", email: "", surname: "")
-        }
+    init() {
+        self.userRepo = UserRepository()
+        self.cropRepo = CropRepository()
+        self.farmRepo = FarmRepository()
+        self.fieldRepo = FieldRepository()
+        self.sensorRepo = SensorRepository()
+        
+        bind()
+        userRepo.start()
     }
     
-    func activeSensors(_ sensors : [Sensor]) -> Int {
-        sensors.filter({$0.status == "active"}).count
+    deinit {
+        userRepo.stop()
+        cropRepo.stop()
+        farmRepo.stop()
+        fieldRepo.stop()
+        sensorRepo.stop()
+    }
+    
+    private func bind() {
+        userRepo.userPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.user = user
+                guard let id = user?.id else { return }
+                
+                self?.farmRepo.start(owner_id: id)
+                self?.cropRepo.start(owner_id: id)
+            }
+            .store(in: &cancellables)
+        cropRepo.$crops
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] crops in
+                self?.crops = crops
+            }
+            .store(in: &cancellables)
+        farmRepo.$farms
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] farms in
+                self?.farms = farms
+                self?.fieldRepo.start(farms: farms)
+            }
+            .store(in: &cancellables)
+        
+        fieldRepo.$fields
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] fields in
+                self?.fields = fields
+                self?.sensorRepo.start(fields: fields)
+            }
+            .store(in: &cancellables)
+        
+        sensorRepo.$sensors
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.sensors, on: self)
+            .store(in: &cancellables)
+    }
+    
+    func addSensor(_ sensor : Sensor) {
+        sensorRepo.add(sensor)
+    }
+    
+    func deleteSensor(_ sensor : Sensor){
+        sensorRepo.delete(sensor)
     }
     
    
@@ -40,13 +102,14 @@ final class AccountViewModel : ObservableObject {
 extension AccountViewModel{
     
     var general : [SectionItem] {
-        let myCrops = SectionItem(icon: "leaf", title: "My Crops", type: .myCrops)
-        let myFields = SectionItem(icon: "mountain.2", title: "My Fields", type: .myFields)
+        let myCrops = SectionItem(icon: "apple.meditate", title: "Crops", type: .myCrops)
+        let myFarms = SectionItem(icon: "tree", title: "Farms", type: .myFarms)
+        let myFields = SectionItem(icon: "mountain.2", title: "Fields", type: .myFields)
         let appearance = SectionItem(icon: "slider.vertical.3", title: "Appearance", type: .appearance)
         let notificationsAndWarnings = SectionItem(icon: "bell", title: "Notifications", type: .notifications)
         let sensors = SectionItem(icon: "antenna.radiowaves.left.and.right", title: "IoT Sensors", type: .iotSensors)
         
-        return [myCrops,myFields,sensors,appearance,notificationsAndWarnings]
+        return [myCrops,myFarms ,myFields,sensors,appearance,notificationsAndWarnings]
     }
     
     var data : [SectionItem] {

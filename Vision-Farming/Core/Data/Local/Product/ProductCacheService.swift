@@ -24,7 +24,7 @@ class ProductCacheService {
     func cacheProducts(_ products: [MarketProduct]) {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CachedProduct.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        try? context.execute(deleteRequest)
+        let _ = try? context.execute(deleteRequest)
         
         for product in products {
             let cached = CachedProduct(context: context)

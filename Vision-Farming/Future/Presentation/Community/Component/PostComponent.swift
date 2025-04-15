@@ -14,17 +14,21 @@ struct PostComponent: View {
     var body: some View {
         VStack(spacing: 15){
             HStack{
-                Image(systemName: "house")
-                    .resizable()
+                Image(systemName: "")
                     .frame(width: 50,height: 50)
                     .background(.green)
                     .clipShape(Circle())
                 VStack(alignment: .leading){
-                    Text("Sinan Dinç")
+                    Text(post.author_name)
                         .fontWeight(.medium)
-                    Text("Posted 3m ago")
-                        .font(.footnote)
-                        .foregroundStyle(.gray)
+                    HStack{
+                        Text("Posted at:")
+                            .font(.footnote)
+                            .foregroundStyle(.gray)
+                        Text(post.created_at ?? .now,style:.date)
+                            .font(.footnote)
+                            .foregroundStyle(.gray)
+                    }
                 }
                 Spacer()
                 Image(systemName:"ellipsis")
@@ -37,7 +41,7 @@ struct PostComponent: View {
                     Image(systemName: "eye.fill")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
-                    Text("5.768K")
+                    Text("\(post.likes_count)")
                         .font(.footnote)
                         .fontWeight(.medium)
                 }
@@ -45,18 +49,11 @@ struct PostComponent: View {
                     Image(systemName: "heart.fill")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
-                    Text("258")
+                    Text("\(post.comments_count)")
                         .font(.footnote)
                         .fontWeight(.medium)
                 }
                 Spacer()
-                HStack{
-                    Image(systemName: "archivebox.fill")
-                        .foregroundStyle(.gray)
-                    Text("Saved")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                }
             }
         }
         .padding()
@@ -70,14 +67,11 @@ struct PostComponent: View {
         post: Post(
             title: "",
             content: "",
-            authorId: "",
-            authorName: "",
-            category: "",
+            author_id: "",
+            author_name: "",
             tags: [""],
-            likesCount: 1,
-            commentsCount: 1,
-            isPublished: true,
-            visibility: ""
+            likes_count: 1,
+            comments_count: 1,
         )
     )
 }

@@ -14,10 +14,10 @@ struct TrendingPage: View {
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(viewModel.posts,id:\.self) { post in
+                ForEach(viewModel.trendingPosts,id:\.self) { post in
                     PostComponent(post: post)
+                        .id(post.id)
                         .padding(.vertical, 7)
-                        .id(post.content.hashValue)
                 }
             }
         }

@@ -6,40 +6,28 @@
 //
 
 import Foundation
+import Combine
 
-final class UserRepository : UserRepositoryProtocol{
+final class UserRepository {
     
-    @Inject private var userRemoteService : UserRemoteServiceProtocol
+    private let userService : UserService
     
-    var isLogged : Bool { return userRemoteService.isLogged }
+    @Published var user : User?
     
-    func fetch() async -> Result<User,UserErrorCallback> {
-        do{
-            let uid = "QNpNMfg4fGd9njQljZZdEeKgesT2"
-            let result = try await userRemoteService.fetchUser(of: uid)
-            switch(result){
-            case .success(let userDto):
-                var user = User(dto: userDto)
-                
-                let farms = try await userRemoteService.fetchFarms(of: user.uid).get()
-                user.farms = farms
-                
-                for farm in farms {
-                    let fields = try await userRemoteService.fetchFields(of: farm.uid).get()
-                    user.fields[farm] = fields
-                    
-                    for field in fields {
-                        let sensors = try await userRemoteService.fetchSensors(of: field.uid).get()
-                        user.sensors[field] = sensors
-                    }
-                }
-                return .success(user)
-            case .failure(let error):
-                return .failure(error)
-            }
-        }
-        catch {
-            return .failure(.noConnection)
-        }
+    init() {
+        self.userService = UserService(auth: .auth(), firestore: .firestore())
     }
+    
+    var userPublisher: AnyPublisher<User?, Never> {
+        userService.userSubject.eraseToAnyPublisher()
+    }
+    
+    func start() {
+        userService.startListening()
+    }
+    
+    func stop(){
+        userService.stopListening()
+    }
+  
 }

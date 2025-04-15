@@ -31,14 +31,7 @@ extension VisionFarmingAppDelegate  {
         let auth = FirebaseAuth.Auth.auth()
         let firestore = Firestore.firestore()
         
-        //User
-        ServiceContainer.register(type: UserRepositoryProtocol.self, UserRepository())
-        ServiceContainer.register(type: UserRemoteServiceProtocol.self, UserRemoteService(auth: auth,firestore: firestore))
-        //Post
-        ServiceContainer.register(type: PostRepositoryProtocol.self, PostRepository())
-        ServiceContainer.register(type: PostLocalServiceProtocol.self, PostLocalService())
-        ServiceContainer.register(type: PostRemoteServiceProtocol.self, PostRemoteService(auth: auth,firestore: firestore))
-        //Product
+        
         ServiceContainer.register(type: ProductRepositoryProtocol.self, ProductRepository())
         ServiceContainer.register(type: ProductRemoteServiceProtocol.self, ProductRemoteService(firestore: firestore))
         //Chatbot

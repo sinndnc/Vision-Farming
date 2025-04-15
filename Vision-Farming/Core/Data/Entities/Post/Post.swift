@@ -8,23 +8,15 @@
 import Foundation
 import FirebaseFirestore
 
-struct Post: Identifiable, Codable , Hashable {
-    @DocumentID var id: String? // Firestore otomatik ID
+struct Post : FirestoreEntity {
+    @DocumentID var id: String?
     var title: String
     var content: String
-    var authorId: String
-    var authorName: String
-    var authorAvatar: String?
-    
-    @ServerTimestamp var createdAt: Timestamp?
-    @ServerTimestamp var updatedAt: Timestamp?
-    
-    var category: String
+    var author_id: String
+    var author_name: String
+    @ServerTimestamp var created_at: Date?
+    @ServerTimestamp var updated_at: Date?
     var tags: [String]
-    var likesCount: Int
-    var commentsCount: Int
-    var isPublished: Bool
-    var visibility: String // "public", "private", "followers-only"
-    var images: [String]?
-    var videos: [String]?
+    var likes_count: Int
+    var comments_count: Int
 }

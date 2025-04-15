@@ -9,25 +9,15 @@ import SwiftUI
 
 struct ForYouPage: View {
     
+    @StateObject var viewModel : CommunityViewModel
+    
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(1...3,id:\.self) { id in
-                    PostComponent(post: Post(
-                        title: "",
-                        content: "",
-                        authorId: "",
-                        authorName: "",
-                        category: "",
-                        tags: [""],
-                        likesCount: 1,
-                        commentsCount: 1,
-                        isPublished: true,
-                        visibility: ""
-                        )
-                    )
-                    .id(id)
-                    .padding(5)
+                ForEach(viewModel.recommendedPosts ,id:\.self) { post in
+                    PostComponent(post: post)
+                        .id(post.id)
+                        .padding(5)
                 }
             }
         }
@@ -36,5 +26,5 @@ struct ForYouPage: View {
 }
 
 #Preview {
-    ForYouPage()
+    ForYouPage(viewModel: CommunityViewModel())
 }

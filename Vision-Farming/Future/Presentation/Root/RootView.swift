@@ -37,8 +37,7 @@ struct RootView: View {
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }
                 Tab("Calendar", systemImage: "calendar", value: .calendar) {
-                    /*CalendarView()*/
-                      AccountView()
+                    CalendarView()
                         .tag(TabEnum.calendar)
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }

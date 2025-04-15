@@ -6,16 +6,12 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseCore
+import FirebaseFirestore
 
-struct User : Codable , Hashable {
-    var uid : String
+struct User : FirestoreEntity{
+    @DocumentID var id : String?
     var name : String
     var role : String
     var email : String
     var surname : String
-    var farms : [Farm] = []
-    var fields : [ Farm : [Field] ] = [:]
-    var sensors : [ Field : [Sensor] ] = [:]
 }

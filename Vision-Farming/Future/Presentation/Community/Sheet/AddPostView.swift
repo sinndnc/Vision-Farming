@@ -7,26 +7,34 @@
 
 import SwiftUI
 
-struct UploadPostView: View {
+struct AddPostView: View {
      
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var viewModel: PostViewModel = .init()
     
-    @State private var name = ""
-    @State private var description = ""
-    @State private var price = ""
+    @State private var content : String = ""
     
     var body: some View {
+        
         NavigationStack{
-            Form {
-                TextField("Ürün Adı", text: $name)
-                TextField("Açıklama", text: $description)
-                TextField("Fiyat", text: $price)
-                    .keyboardType(.decimalPad)
+            List {
+                TextEditor(text: $content)
+                    .frame(height: 200)
+                    .overlay{
+                        HStack() {
+                            if content.isEmpty{
+                                Text("My plants are so healthy!")
+                                    .foregroundStyle(.gray)
+                            }
+                            Spacer()
+                        }
+                        .padding(.leading,5)
+                        .padding(.top,8)
+                        .frame(width: .infinity, height: 200,alignment: .topLeading)
+                    }
+                    .onChange(of: content) {
+                        content = String(content.prefix(1000))
+                    }
                 
-                Button("Ürünü Ekle") {
-                    dismiss()
-                }
             }
             .navigationTitle("Create Post")
             .navigationBarTitleDisplayMode(.inline)
@@ -52,5 +60,5 @@ struct UploadPostView: View {
 }
 
 #Preview {
-    UploadPostView()
+    AddPostView()
 }

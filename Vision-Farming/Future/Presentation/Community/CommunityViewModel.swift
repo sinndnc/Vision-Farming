@@ -18,31 +18,46 @@ enum CommunityTab : String , CaseIterable {
 
 final class CommunityViewModel : ObservableObject {
     
-    @Published var user : User? = nil
-    @Published var posts: [Post] = []
-    @Published var errorMessage: String?
+    @Published var user : User?
+    @Published var myPosts: [Post] = []
+    @Published var trendingPosts: [Post] = []
+    @Published var recommendedPosts: [Post] = []
     @Published var selectedTab : CommunityTab = .trending
-   
+    
+    private let userRepo : UserRepository
+    private let postRepo : PostRepository
     private var cancellables = Set<AnyCancellable>()
     
-    @Inject public var postRepository : PostRepositoryProtocol
+    init(){
+        self.userRepo = UserRepository()
+        self.postRepo = PostRepository()
+        
+        bind()
+        userRepo.start()
+    }
     
-    func getPosts() {
-        postRepository.fetchPosts()
+    deinit{
+        userRepo.stop()
+        postRepo.stop()
+    }
+    
+    func bind() {
+        userRepo.userPublisher
             .receive(on: DispatchQueue.main)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    switch error {
-                    case .noConnection:
-                        self.errorMessage = error.localizedDescription
-                    default:
-                        self.errorMessage = error.localizedDescription
-                    }
-                }
-            } receiveValue: { posts in
-                self.posts = posts
+            .sink { [weak self] user in
+                self?.user = user
+                guard let id = user?.id else { return }
+                self?.load(user_id: id, userTags: ["test"])
             }
             .store(in: &cancellables)
+    }
+    
+    
+    private func load(user_id : String, userTags: [String]) {
+        postRepo.observeAll(user_id: user_id, tags: userTags)
+        postRepo.$myPosts.assign(to: &$myPosts)
+        postRepo.$trendingPosts.assign(to: &$trendingPosts)
+        postRepo.$recommendedPosts.assign(to: &$recommendedPosts)
     }
     
 }
