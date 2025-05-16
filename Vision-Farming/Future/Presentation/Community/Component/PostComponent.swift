@@ -25,7 +25,7 @@ struct PostComponent: View {
                         Text("Posted at:")
                             .font(.footnote)
                             .foregroundStyle(.gray)
-                        Text(post.created_at ?? .now,style:.date)
+                        Text(post.created_at,style:.date)
                             .font(.footnote)
                             .foregroundStyle(.gray)
                     }
@@ -41,7 +41,7 @@ struct PostComponent: View {
                     Image(systemName: "eye.fill")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
-                    Text("\(post.likes_count)")
+                    Text("\(post.likes)")
                         .font(.footnote)
                         .fontWeight(.medium)
                 }
@@ -49,7 +49,7 @@ struct PostComponent: View {
                     Image(systemName: "heart.fill")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
-                    Text("\(post.comments_count)")
+                    Text("\(post.likes)")
                         .font(.footnote)
                         .fontWeight(.medium)
                 }
@@ -60,18 +60,4 @@ struct PostComponent: View {
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
-}
-
-#Preview {
-    PostComponent(
-        post: Post(
-            title: "",
-            content: "",
-            author_id: "",
-            author_name: "",
-            tags: [""],
-            likes_count: 1,
-            comments_count: 1,
-        )
-    )
 }

@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct OnBoardView: View {
+    
+    @EnvironmentObject var rootViewModel : RootViewModel
+    
     var body: some View {
-        Text("Hello, World!")
+        RootView(rootViewModel: rootViewModel)
     }
 }
 

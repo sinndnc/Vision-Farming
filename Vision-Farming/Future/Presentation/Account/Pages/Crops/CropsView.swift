@@ -9,20 +9,28 @@ import SwiftUI
 
 struct CropsView: View {
     
-    @StateObject var viewModel : AccountViewModel
+    @EnvironmentObject var rootViewModel : RootViewModel
     
     var body: some View {
         List{
-            ForEach(viewModel.crops,id: \.self) { crop in
+            ForEach(rootViewModel.crops,id: \.self) { crop in
                 Section{
                     NavigationLink{
                         CropDetailView(crop:crop)
                     }label:{
                         HStack{
-                            Image(systemName: "test")
-                                .frame(width:50,height:50)
-                                .background(.black)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            if let data = crop.image,
+                               let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width:50,height:50)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }else{
+                                ProgressView()
+                                    .frame(width:50,height:50)
+                            }
+                           
                             VStack(alignment:.leading){
                                 HStack{
                                     Text(crop.name)
@@ -43,8 +51,4 @@ struct CropsView: View {
         }
         .navigationTitle("Crops")
     }
-}
-
-#Preview {
-    CropsView(viewModel: AccountViewModel())
 }

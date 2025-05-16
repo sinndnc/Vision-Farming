@@ -9,10 +9,12 @@ import SwiftUI
 
 struct DashboardView: View {
     
-    @StateObject private var viewModel: DashboardViewModel = .init()
+    @State private var isPresented : Bool = false
+    @StateObject private var viewModel: DashboardViewModel = DashboardViewModel()
+    @EnvironmentObject public var rootViewModel: RootViewModel
     
     var body: some View {
-        GeometryReader { GeometryProxy in
+        GeometryReader { geometryProxy in
             NavigationStack(){
                 ScrollView(showsIndicators: false) {
                     LazyVStack(pinnedViews: .sectionHeaders){
@@ -26,19 +28,35 @@ struct DashboardView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        NavigationLink{
-                            AccountView()
+                        Button{
+                            isPresented.toggle()
                         } label:{
-                            Image(systemName: "person")
-                                .padding(10)
-                                .background(.gray.opacity(0.2))
-                                .clipShape(Circle())
+                            if let user = rootViewModel.user,
+                               let data = user.image,
+                               let uiImage = UIImage(data: data)
+                            {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(Circle())
+                                    .frame(width: 40,height: 40)
+                            }else{
+                                Rectangle()
+                                    .background(.gray)
+                                    .clipShape(Circle())
+                                    .frame(width: 40,height: 40)
+                            }
                         }
                         .tint(.black)
                     }
                 }
+                .sheet(isPresented: $isPresented) {
+                    let viewModel = AccountViewModel(rootViewModel: rootViewModel)
+                    AccountView(viewModel: viewModel)
+                }
             }
         }
+       
     }
 }
 

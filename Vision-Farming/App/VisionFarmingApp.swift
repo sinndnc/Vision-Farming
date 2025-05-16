@@ -11,12 +11,14 @@ import AVFoundation
 @main
 struct Vision_FarmingApp: App {
     
-    @UIApplicationDelegateAdaptor(VisionFarmingAppDelegate.self) var delegate
     @StateObject private var viewModel = AppearanceViewModel()
+    @StateObject private var rootViewModel = DIContainer.shared.rootViewModel
+    @UIApplicationDelegateAdaptor(VisionFarmingAppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            OnBoardView()
+                .environmentObject(rootViewModel)
                 .preferredColorScheme(viewModel.currentTheme.toColorScheme)
         }
     }

@@ -14,7 +14,8 @@ struct TrendingPage: View {
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(viewModel.trendingPosts,id:\.self) { post in
+                let filteredPosts = viewModel.posts.sorted { $0.trend_score > $1.trend_score }
+                ForEach(filteredPosts) { post in
                     PostComponent(post: post)
                         .id(post.id)
                         .padding(.vertical, 7)
@@ -23,8 +24,4 @@ struct TrendingPage: View {
         }
         .padding(.horizontal,10)
     }
-}
-
-#Preview {
-    TrendingPage(viewModel: .init())
 }

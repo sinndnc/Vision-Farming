@@ -1,0 +1,113 @@
+//
+//  UserDataLoader.swift
+//  Vision-Farming
+//
+//  Created by Sinan Dinç on 5/7/25.
+//
+
+import Combine
+import Foundation
+
+
+final class DataLoader {
+    
+    private let userRepository: UserRepository
+    private let cropRepository: CropRepository
+    private let farmRepository: FarmRepository
+    private let postRepository: PostRepository
+    private let fieldRepository: FieldRepository
+    private let sensorRepository: SensorRepository
+    private let productRepository: ProductRepository
+    private let categoryRepository: CategoryRepository
+    
+    init(
+        userRepository: UserRepository,
+        cropRepository: CropRepository,
+        farmRepository: FarmRepository,
+        postRepository: PostRepository,
+        fieldRepository: FieldRepository,
+        sensorRepository: SensorRepository,
+        productRepository: ProductRepository,
+        categoryRepository: CategoryRepository
+    ) {
+        self.userRepository = userRepository
+        self.cropRepository = cropRepository
+        self.farmRepository = farmRepository
+        self.postRepository = postRepository
+        self.fieldRepository = fieldRepository
+        self.sensorRepository = sensorRepository
+        self.productRepository = productRepository
+        self.categoryRepository = categoryRepository
+    }
+    
+    func loadAndListenUserData() -> AnyPublisher<(User?, [Crop], [Farm], [Field], [Sensor]), NetworkErrorCallback> {
+        return userRepository.listen(policy: .staleWhileRevalidate())
+            .flatMap { user -> AnyPublisher<(User?, [Crop], [Farm], [Field], [Sensor]), NetworkErrorCallback> in
+                guard let user = user, let userId = user.id else {
+                    Logger.log("❌ Kullanıcı bulunamadı veya ID eksik, akış kesiliyor.")
+                    return Fail(
+                        error: NetworkErrorCallback.local(NSError(domain: "UserNotFound", code: -1, userInfo: nil))
+                    )
+                    .eraseToAnyPublisher()
+                }
+                //TODO: fetch user's post on remote
+                return Publishers.Zip(
+                    self.cropRepository.listen(owner_id: userId, policy: .staleWhileRevalidate()),
+                    self.farmRepository.listen(owner_id: userId, policy: .staleWhileRevalidate())
+                )
+                .flatMap { crops, farms -> AnyPublisher<(User?, [Crop], [Farm], [Field], [Sensor]), NetworkErrorCallback> in
+                    
+                    let fieldPublishers = farms.compactMap { farm -> AnyPublisher<[Field], NetworkErrorCallback>? in
+                        guard let farmId = farm.id else {
+                            Logger.log("❌ Farm ID eksik, akış kesiliyor.")
+                            return Fail(
+                                error: NetworkErrorCallback.local(NSError(domain: "FarmIDNotFound", code: -2, userInfo: nil))
+                            )
+                            .eraseToAnyPublisher()
+                        }
+                        return self.fieldRepository.listen(owner_farm: farmId, policy: .staleWhileRevalidate())
+                    }
+                    
+                    return Publishers.MergeMany(fieldPublishers)
+                        .flatMap { allFields -> AnyPublisher<(User?, [Crop], [Farm], [Field], [Sensor]), NetworkErrorCallback> in
+                            
+                            let sensorPublishers = allFields.compactMap { field -> AnyPublisher<[Sensor], NetworkErrorCallback>? in
+                                guard let fieldId = field.id else {
+                                    Logger.log("❌ Field ID eksik, akış kesiliyor.")
+                                    return Fail(
+                                        error: NetworkErrorCallback.local(NSError(domain: "FieldIDNotFound", code: -3, userInfo: nil))
+                                    )
+                                    .eraseToAnyPublisher()
+                                }
+                                return self.sensorRepository.listen(owner_field: fieldId, policy: .staleWhileRevalidate())
+                            }
+                            
+                            return Publishers.MergeMany(sensorPublishers)
+                                .collect()
+                                .map { allSensors in
+                                    let flattenedSensors = allSensors.flatMap { $0 }
+                                    
+                                    let uniqueSensors = Dictionary(grouping: flattenedSensors, by: { $0.id })
+                                        .compactMap { $0.value.first }
+                                    
+                                    return (user, crops, farms, allFields, uniqueSensors)
+                                }
+                                .eraseToAnyPublisher()
+                        }
+                        .eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func loadAndListenProductsAndPostsData() -> AnyPublisher<([Post],[MarketProduct]),NetworkErrorCallback> {
+        let productPublisher = productRepository.listen(policy: .staleWhileRevalidate())
+        let postPublisher = postRepository.listen(policy: .staleWhileRevalidate())
+        return Publishers.Zip(
+            postPublisher,
+            productPublisher
+        )
+        .eraseToAnyPublisher()
+    }
+}

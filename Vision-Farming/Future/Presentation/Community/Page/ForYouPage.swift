@@ -14,17 +14,14 @@ struct ForYouPage: View {
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(viewModel.recommendedPosts ,id:\.self) { post in
+                let filteredPosts = viewModel.posts.filter{ $0.is_following == false }
+                ForEach(filteredPosts) { post in
                     PostComponent(post: post)
                         .id(post.id)
-                        .padding(5)
+                        .padding(.vertical, 7)
                 }
             }
         }
         .padding(.horizontal,10)
     }
-}
-
-#Preview {
-    ForYouPage(viewModel: CommunityViewModel())
 }

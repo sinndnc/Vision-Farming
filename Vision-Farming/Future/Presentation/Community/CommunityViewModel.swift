@@ -16,48 +16,35 @@ enum CommunityTab : String , CaseIterable {
     case following = "Following"
 }
 
-final class CommunityViewModel : ObservableObject {
+final class CommunityViewModel : BaseViewModel {
     
     @Published var user : User?
-    @Published var myPosts: [Post] = []
-    @Published var trendingPosts: [Post] = []
-    @Published var recommendedPosts: [Post] = []
+    @Published var posts : [Post] = []
     @Published var selectedTab : CommunityTab = .trending
     
-    private let userRepo : UserRepository
-    private let postRepo : PostRepository
-    private var cancellables = Set<AnyCancellable>()
+    init(rootViewModel : RootViewModel){
+        super.init()
+        rootViewModel.$posts
+            .assign(to: &$posts)
+    }
     
-    init(){
-        self.userRepo = UserRepository()
-        self.postRepo = PostRepository()
+    private func calculateTrendingScores() {
+        let now = Date()
+        self.posts = self.posts.map { post in
+            var updatedPost = post
+            let hoursSincePosted = max(1, now.timeIntervalSince(post.created_at) / 3600)
+            
+            let score = (Double(post.likes) * 2) +
+//            (Double(post.comments) * 3) +
+//            (Double(post.shares) * 5) +
+            (Double(post.views) / 100) -
+            (hoursSincePosted * 0.5)
+            
+            updatedPost.trend_score = max(0, Int(score))
+            return updatedPost
+        }
         
-        bind()
-        userRepo.start()
-    }
-    
-    deinit{
-        userRepo.stop()
-        postRepo.stop()
-    }
-    
-    func bind() {
-        userRepo.userPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                self?.user = user
-                guard let id = user?.id else { return }
-                self?.load(user_id: id, userTags: ["test"])
-            }
-            .store(in: &cancellables)
-    }
-    
-    
-    private func load(user_id : String, userTags: [String]) {
-        postRepo.observeAll(user_id: user_id, tags: userTags)
-        postRepo.$myPosts.assign(to: &$myPosts)
-        postRepo.$trendingPosts.assign(to: &$trendingPosts)
-        postRepo.$recommendedPosts.assign(to: &$recommendedPosts)
+        self.posts.sorted { $0.trend_score > $1.trend_score }
     }
     
 }

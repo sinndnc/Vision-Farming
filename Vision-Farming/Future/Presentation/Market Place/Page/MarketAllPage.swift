@@ -8,19 +8,26 @@
 import SwiftUI
 
 struct MarketAllPage: View {
+    
+    @State var products: [MarketProduct]
+    
     var body: some View {
-        Section {
-            Grid{
-                GridRow {
-                    MarketWidget()
-                    MarketWidget()
+        Section{
+            Grid(alignment: .topLeading) {
+                ForEach(products.chunked(into: 2), id: \.self) { rowProducts in
+                    GridRow {
+                        ForEach(rowProducts) { product in
+                            NavigationLink {
+                                ProductDetailView(product: product)
+                            } label: {
+                                ProductWidget(product: product)
+                            }
+                            .tint(.black)
+                        }
+                    }
                 }
             }
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
     }
-}
-
-#Preview {
-    MarketAllPage()
 }

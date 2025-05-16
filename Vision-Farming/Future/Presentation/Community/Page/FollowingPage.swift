@@ -14,18 +14,15 @@ struct FollowingPage: View {
     var body: some View {
         ScrollView{
             LazyVStack(spacing: 0){
-                ForEach(viewModel.myPosts ,id:\.self) { post in
+                let filteredPosts = viewModel.posts.filter{ $0.is_following == true }
+                ForEach(filteredPosts) { post in
                     PostComponent(post: post)
                         .id(post.id)
-                        .padding(5)
+                        .padding(.vertical, 7)
                 }
             }
         }
         .padding(.horizontal,10)
     }
     
-}
-
-#Preview {
-    FollowingPage(viewModel: CommunityViewModel())
 }

@@ -11,6 +11,6 @@ import FirebaseFirestore
 struct Farm : FirestoreEntity {
     @DocumentID var id : String?
     var name : String
-    var owner_uid : String
+    var owner_id : String
     var location : GeoPoint
 }

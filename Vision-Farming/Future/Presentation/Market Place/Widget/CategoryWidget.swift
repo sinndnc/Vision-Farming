@@ -10,15 +10,24 @@ import Foundation
 
 struct CategoryWidget : View {
     
-    @StateObject var viewModel : MarketPlaceViewModel
+    let category : Category
     
     var body: some View {
         VStack(alignment: .center){
-            Image(systemName: "house")
-                .frame(width: 50,height: 50)
-                .background(.green.opacity(0.3))
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-            Text("Spinach")
+            if let data = category.image, let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50,height: 50)
+                    .overlay{
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(.gray, lineWidth: 1)
+                    }
+            }else{
+                ProgressView()
+                    .frame(width: 50,height: 50)
+            }
+            Text(category.name)
                 .font(.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(.gray)

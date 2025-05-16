@@ -8,8 +8,31 @@
 import SwiftUI
 
 struct CalendarView: View {
+    
+    @StateObject var viewModel : CalendarViewModel = .init()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            GeometryReader{geo in
+                VStack(spacing:0){
+                    TimelineHeaderComponent(geo: geo, viewModel:viewModel)
+                    ScrollViewReader { proxy in
+                        ScrollView(){
+                            TimelineGraphicComponent(geo: geo, viewModel:viewModel)
+                        }
+                        .onAppear {
+//                            if (viewModel.graphicViewUIState == .initial) {
+                                proxy.scrollTo(15,anchor: .center)
+//                                viewModel.graphicViewUIState = .success
+//                            }
+                        }
+                    }
+                }
+            }
+            .searchable(text: .constant(""))
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("December 2024")
+        }
     }
 }
 

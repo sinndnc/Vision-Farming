@@ -2,35 +2,28 @@
 //  Product.swift
 //  Vision-Farming
 //
-//  Created by Sinan Dinç on 4/9/25.
+//  Created by Sinan Dinç on 5/11/25.
 //
 
-import Foundation
 import FirebaseFirestore
-import CoreLocation
+import Foundation
 
-struct MarketProduct: Identifiable, Codable {
+struct MarketProduct: FirestoreEntity {
     @DocumentID var id: String?
     var name: String
     var description: String
-    var category: String
+    var category: ProductEnum
+    var image : Data?
+    
+    var stock: Int
     var price: Double
     var currency: String
-    var stock: Int
+    var isAvailable: Bool
     var unit: String
     
-    var images: [String]?
-    var thumbnail: String?
-    var rating: Double
-    var reviewsCount: Int
-    var isAvailable: Bool
+    var farm_id: String
+    var region : String
     
-    @ServerTimestamp var createdAt: Timestamp? 
+    @ServerTimestamp var createdAt: Timestamp?
     @ServerTimestamp var updatedAt: Timestamp?
-    
-    var tags: [String]
-    var producerId: String
-    
-    var location: GeoPoint?
 }
-

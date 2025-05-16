@@ -1,0 +1,20 @@
+[
+  {
+    "id": "sebzeler",
+    "name": "Sebzeler",
+    "products": [
+      { "id": "domates", "name": "Domates" },
+      { "id": "biber", "name": "Biber" },
+      { "id": "salatalik", "name": "Salatalık" }
+    ]
+  },
+  {
+    "id": "meyveler",
+    "name": "Meyveler",
+    "products": [
+      { "id": "elma", "name": "Elma" },
+      { "id": "armut", "name": "Armut" },
+      { "id": "muz", "name": "Muz" }
+    ]
+  }
+]

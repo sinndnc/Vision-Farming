@@ -29,7 +29,3 @@ struct SuggestionComponent: View {
         .tabViewStyle(.page(indexDisplayMode: .never))
     }
 }
-
-#Preview {
-    SuggestionComponent(viewModel: MarketPlaceViewModel())
-}

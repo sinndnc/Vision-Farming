@@ -6,15 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
-struct Category : Codable,Identifiable {
-    var id : String
-    var category_name: String
-    var category_description: String
-}
-
-struct SubCategory : Codable,Identifiable {
-    var id : String
+struct Category: FirestoreEntity {
+    @DocumentID var id: String?
     var name: String
-    var description: String
+    var image : Data?
 }

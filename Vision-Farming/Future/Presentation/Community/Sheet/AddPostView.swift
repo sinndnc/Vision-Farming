@@ -14,7 +14,6 @@ struct AddPostView: View {
     @State private var content : String = ""
     
     var body: some View {
-        
         NavigationStack{
             List {
                 TextEditor(text: $content)
@@ -29,7 +28,7 @@ struct AddPostView: View {
                         }
                         .padding(.leading,5)
                         .padding(.top,8)
-                        .frame(width: .infinity, height: 200,alignment: .topLeading)
+                        .frame(height: 200,alignment: .topLeading)
                     }
                     .onChange(of: content) {
                         content = String(content.prefix(1000))

@@ -31,7 +31,6 @@ struct SensorsView: View {
                                     HStack{
                                         Text(sensor.toString)
                                             .font(.callout)
-                                            .fontWeight(.medium)
                                         Spacer()
                                         Text("\(groupSensors.count)")
                                             .foregroundStyle(.gray)
@@ -47,7 +46,7 @@ struct SensorsView: View {
                         } label: {
                             HStack{
                                 Text(field.name)
-                                    .fontWeight(.medium)
+                                    .font(.subheadline)
                             }
                         }
                     }
@@ -74,8 +73,3 @@ struct SensorsView: View {
 }
 
 
-#Preview {
-    NavigationStack{
-        SensorsView(viewModel: AccountViewModel())
-    }
-}

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SUPABASE_BUCKET</key>
+	<string>vision-farming</string>
+	<key>SUPABASE_KEY</key>
+	<string>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cXFvZ2x4d3pyYWtra2pwbG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NzIxMDUsImV4cCI6MjA2MDU0ODEwNX0.EoRHqKVweshs_g47r0lCinkZfHUqCc_sjcFRfUkP0jM</string>
+	<key>SUPABASE_URL</key>
+	<string>https://cvqqoglxwzrakkkjplnq.supabase.co</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This key lets you describe the reason your app accesses the user’s photo library. When the system prompts the user to allow access, this string is displayed as part of the alert.</string>
 </dict>

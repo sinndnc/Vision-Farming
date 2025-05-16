@@ -8,10 +8,11 @@
 import Foundation
 import FirebaseFirestore
 
-struct User : FirestoreEntity{
-    @DocumentID var id : String?
-    var name : String
-    var role : String
-    var email : String
-    var surname : String
+public struct User : FirestoreEntity {
+    @DocumentID public var id: String?
+    var name: String
+    var surname: String
+    var email: String
+    var role: String
+    var image: Data?
 }

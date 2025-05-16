@@ -27,18 +27,7 @@ extension VisionFarmingAppDelegate  {
     
     func setupDependencyContainer() {
         FirebaseApp.configure()
-        
-        let auth = FirebaseAuth.Auth.auth()
-        let firestore = Firestore.firestore()
-        
-        
-        ServiceContainer.register(type: ProductRepositoryProtocol.self, ProductRepository())
-        ServiceContainer.register(type: ProductRemoteServiceProtocol.self, ProductRemoteService(firestore: firestore))
-        //Chatbot
-        ServiceContainer.register(type: ChatBotServiceProtocol.self, ChatBotService())
-        //Catalog
-        ServiceContainer.register(type: CatalogRemoteServiceProtocol.self, CatalogRemoteService(firestore: firestore))
-        
+        ValueTransformer.setValueTransformer(GeoPointTransformer(), forName: NSValueTransformerName(rawValue: "GeoPointTransformer"))
     }
 
 }

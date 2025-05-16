@@ -31,7 +31,7 @@ struct ChatView : View , KeyboardReadable {
                 ScrollViewReader{ scrollProxy in
                     ScrollView{
                         LazyVStack{
-                            ForEach(viewModel.messages){ message in
+                            ForEach(viewModel.messages.reversed()){ message in
                                 let textColor = message.isUser ? Color.black : Color.white
                                 let bubbleAlignment : Alignment = message.isUser ? .trailing : .leading
                                 let backgroundColor = message.isUser ? Color.gray.opacity(0.1) : Color.blue
@@ -39,7 +39,6 @@ struct ChatView : View , KeyboardReadable {
                                 ZStack{
                                     Text(message.text)
                                         .padding(10)
-                                        .id(message.id)
                                         .font(.subheadline)
                                         .foregroundStyle(textColor)
                                         .background(backgroundColor)
@@ -49,34 +48,15 @@ struct ChatView : View , KeyboardReadable {
                                             alignment: bubbleAlignment
                                         )
                                 }
-                                .id(message.id)
                                 .frame(maxWidth: .infinity, alignment: bubbleAlignment )
+                                .flippedUpsideDown()
                             }
                         }
-                        .scrollTargetLayout()
                     }
+                    .refreshable { }
+                    .flippedUpsideDown()
                     .onTapGesture{ isFocused.toggle()}
-                    .scrollTargetBehavior(.viewAligned)
                     .scrollPosition($scrollPosition,anchor: .bottom)
-                    .onAppear { scrollPosition.scrollTo(edge: .bottom) }
-                    .onScrollTargetVisibilityChange(idType: ChatMessage.ID.self, { messages in
-                        guard let lastMessageId = messages.last else { return }
-                        guard let lastMessage = viewModel.messages.last else { return }
-                        
-                        if (lastMessage.id != lastMessageId) {
-                            scrollToBottom = true
-                        }else{
-                            scrollToBottom = false
-                        }
-                    })
-                    .onChange(of: viewModel.messages.count) { _, _ in
-                        withAnimation { scrollToBottom(scrollProxy) }
-                    }
-                    .onChange(of: isKeyboardShowing) { oldValue, newValue in 
-                        if (newValue) {
-                            withAnimation { scrollToBottom(scrollProxy) }
-                        }
-                    }
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .safeAreaInset(edge: .bottom) {

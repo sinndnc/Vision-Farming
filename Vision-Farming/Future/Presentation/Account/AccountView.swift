@@ -7,48 +7,35 @@
 
 import MapKit
 import SwiftUI
-
-
-enum SectionType {
-    case appearance
-    case notifications
-    case iotSensors
-    case myCrops
-    case myFarms
-    case blockchain
-    case tracking
-    case cooperative
-    case supplyChain
-    case recommendations
-    case smartAlert
-    case terms
-    case privacy
-    case aboutUs
-    case myFields
-}
-struct SectionItem : Identifiable {
-    var id = UUID()
-    var icon : String
-    var title : String
-    let type: SectionType
-    var detail : String? = nil
-}
+import PhotosUI
 
 struct AccountView: View {
     
-    @StateObject private var viewModel : AccountViewModel = .init()
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @StateObject public var viewModel : AccountViewModel
     
     var body: some View{
-        NavigationStack(path: $viewModel.navigationPath){
+        NavigationStack(path: $viewModel.accNavigationPath){
             List{
                 Section{
                     NavigationLink{
+                        ProfileView()
                     }label:{
                         HStack{
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.green)
+                            if let user = viewModel.user,
+                               let image = user.image,
+                               let uiImage = UIImage(data: image)
+                            {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(Circle())
+                                    .frame(width: 50, height: 50)
+                            }
+                            else{
+                                ProgressView()
+                                    .frame(width: 50, height: 50)
+                            }
                             VStack(alignment:.leading) {
                                 if let user = viewModel.user{
                                     Text("\(user.name) \(user.surname)")
@@ -110,10 +97,10 @@ struct AccountView: View {
             }
             .navigationTitle("Account")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: SectionType.self) { type in
+            .navigationDestination(for: SectionEnum.self) { type in
                 switch type {
                 case .myCrops:
-                    CropsView(viewModel: viewModel)
+                    CropsView()
                 case .myFarms:
                     FarmsView(viewModel: viewModel)
                 case .myFields:
@@ -144,7 +131,3 @@ struct AccountView: View {
     }
 }
 
-
-#Preview {
-    AccountView()
-}

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum MarketPlaceTab : String , CaseIterable {
     case all = "All"
@@ -15,8 +16,17 @@ enum MarketPlaceTab : String , CaseIterable {
     case favorite = "Favorite"
 }
 
-final class MarketPlaceViewModel : ObservableObject {
+final class MarketPlaceViewModel : BaseViewModel {
     
-    @Published var selectedTab : MarketPlaceTab = .all
-
+    @Published var categories : [Category] = []
+    @Published var currentTab : MarketPlaceTab = .all
+    
+    @Published public var products : [MarketProduct] = []
+    
+    init(rootViewModel : RootViewModel) {
+        super.init()
+        rootViewModel.$products
+            .assign(to: &$products)
+    }
+    
 }

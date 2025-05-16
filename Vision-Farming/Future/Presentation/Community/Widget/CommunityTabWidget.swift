@@ -45,7 +45,3 @@ struct CommunityTabWidget: View {
         .background(.white)
     }
 }
-
-#Preview {
-    CommunityTabWidget(viewModel: CommunityViewModel())
-}

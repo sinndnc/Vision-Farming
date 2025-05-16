@@ -8,29 +8,22 @@
 import SwiftUI
 
 struct FavoritesPage: View {
+    
+    @State var products: [MarketProduct]
+    
     var body: some View {
-        Grid(){
-            GridRow {
-                MarketWidget()
-                MarketWidget()
+        Section {
+            Grid{
+                let filteredProducts = products.filter{ $0.category == .favorites}
+                ForEach(filteredProducts.chunked(into: 2), id: \.self) { rowProducts in
+                    GridRow {
+                        ForEach(rowProducts) { product in
+                            ProductWidget(product: product)
+                        }
+                    }
+                }
             }
-            GridRow {
-                MarketWidget()
-                MarketWidget()
-            }
-            GridRow {
-                MarketWidget()
-                MarketWidget()
-            }
-            GridRow {
-                MarketWidget()
-                MarketWidget()
-            }
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
     }
-}
-
-#Preview {
-    FavoritesPage()
 }

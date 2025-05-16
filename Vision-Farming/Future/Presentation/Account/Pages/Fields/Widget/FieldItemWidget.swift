@@ -22,30 +22,36 @@ struct FieldItemWidget: View {
             HStack{
                 Text("Name:")
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                Spacer()
                 Text(field.name)
                     .font(.subheadline)
-                    .fontWeight(.medium)
             }
             
             HStack{
                 Text("Planted at:")
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                Spacer()
                 Text(field.planted_date,style: .date)
                     .font(.subheadline)
-                    .fontWeight(.medium)
             }
             
             HStack{
                 Text("Estimated Harvesting:")
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                Spacer()
                 Text(field.harvest_date,style: .date)
                     .font(.subheadline)
-                    .fontWeight(.medium)
             }
             
             Divider()
             
-            Map(position: $cameraPosition) {
+            Map(
+                position: $cameraPosition,
+                bounds: MapCameraBounds(maximumDistance: 1000)
+            ) {
                 MapPolygon(coordinates: coordinates)
                     .stroke(.red, lineWidth: 1)
                     .foregroundStyle(.red.opacity(0.2))
@@ -53,7 +59,7 @@ struct FieldItemWidget: View {
             }
             .disabled(true)
             .mapStyle(.imagery)
-            .frame(height: geoProxy.size.height * 0.2)
+            .frame(height: geoProxy.size.height * 0.175)
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }

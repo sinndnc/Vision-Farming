@@ -10,94 +10,44 @@ import SwiftUI
 import FirebaseAuth
 import Combine
 import CoreData
+import Supabase
 
 
-final class AccountViewModel : ObservableObject {
+final class AccountViewModel : BaseViewModel {
     
-    @Published public var user: User?
+    @Published public var user : User?
     @Published public var farms: [Farm] = []
     @Published public var crops : [Crop] = []
     @Published public var fields: [Field] = []
     @Published public var sensors: [Sensor] = []
     
     @Published public var sections : [SectionItem] = []
-    @Published public var navigationPath = NavigationPath()
-   
-    private let userRepo: UserRepository
-    private let cropRepo: CropRepository
-    private let farmRepo: FarmRepository
-    private let fieldRepo: FieldRepository
-    private let sensorRepo: SensorRepository
-    private var cancellables = Set<AnyCancellable>()
+    @Published public var accNavigationPath = NavigationPath()
     
-    init() {
-        self.userRepo = UserRepository()
-        self.cropRepo = CropRepository()
-        self.farmRepo = FarmRepository()
-        self.fieldRepo = FieldRepository()
-        self.sensorRepo = SensorRepository()
+    init(rootViewModel : RootViewModel) {
+        super.init()
+        rootViewModel.$user
+            .assign(to: &$user)
+        rootViewModel.$farms
+            .assign(to: &$farms)
+        rootViewModel.$crops
+            .assign(to: &$crops)
+        rootViewModel.$fields
+            .assign(to: &$fields)
+        rootViewModel.$sensors
+            .assign(to: &$sensors)
         
-        bind()
-        userRepo.start()
-    }
-    
-    deinit {
-        userRepo.stop()
-        cropRepo.stop()
-        farmRepo.stop()
-        fieldRepo.stop()
-        sensorRepo.stop()
-    }
-    
-    private func bind() {
-        userRepo.userPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                self?.user = user
-                guard let id = user?.id else { return }
-                
-                self?.farmRepo.start(owner_id: id)
-                self?.cropRepo.start(owner_id: id)
-            }
-            .store(in: &cancellables)
-        cropRepo.$crops
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] crops in
-                self?.crops = crops
-            }
-            .store(in: &cancellables)
-        farmRepo.$farms
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] farms in
-                self?.farms = farms
-                self?.fieldRepo.start(farms: farms)
-            }
-            .store(in: &cancellables)
-        
-        fieldRepo.$fields
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] fields in
-                self?.fields = fields
-                self?.sensorRepo.start(fields: fields)
-            }
-            .store(in: &cancellables)
-        
-        sensorRepo.$sensors
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.sensors, on: self)
-            .store(in: &cancellables)
     }
     
     func addSensor(_ sensor : Sensor) {
-        sensorRepo.add(sensor)
+//        sensorRepo.add(sensor)
     }
     
     func deleteSensor(_ sensor : Sensor){
-        sensorRepo.delete(sensor)
+//        sensorRepo.delete(sensor)
     }
-    
-   
 }
+
 
 extension AccountViewModel{
     

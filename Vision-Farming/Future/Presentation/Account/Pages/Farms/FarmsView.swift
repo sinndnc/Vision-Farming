@@ -12,17 +12,29 @@ struct FarmsView: View {
     @StateObject var viewModel : AccountViewModel
     
     var body: some View {
-        List{
-            ForEach(viewModel.farms,id:\.self) { farm in
-                Text("\(farm.name)")
-                    .font(.title3)
-                    .fontWeight(.medium)
+        GeometryReader { geoProxy in
+            List{
+                ForEach(viewModel.farms,id:\.self) { farm in
+                    Section{
+                        NavigationLink {
+                            FarmDetailView(farm: farm)
+                        } label: {
+                            FarmItemWidget(farm: farm, geoProxy: geoProxy)
+                        }
+                    } footer:{
+                        HStack{
+                            Spacer()
+                            Text("Size (m²)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Text("223.3223")
+                                .font(.subheadline)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle("Farms")
     }
 }
 
-#Preview {
-    FarmsView(viewModel: AccountViewModel())
-}

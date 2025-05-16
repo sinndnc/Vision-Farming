@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Supabase
 import BottomSheet
 
 struct RootView: View {
     
-    @State private var isPresented = false
-    @StateObject var rootViewModel = RootViewModel()
+    @State private var isPresented : Bool = false
+    @StateObject public var rootViewModel : RootViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -22,12 +23,14 @@ struct RootView: View {
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }
                 Tab("Community", systemImage:"person.3.fill",value: .community){
-                    CommunityView()
+                    let viewModel = CommunityViewModel(rootViewModel: rootViewModel)
+                    CommunityView(viewModel: viewModel)
                         .tag(TabEnum.community)
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }
                 Tab("Market Place",systemImage: "cart.badge.plus",value: .marketPlace){
-                    MarketPlaceView()
+                    let viewModel = MarketPlaceViewModel(rootViewModel: rootViewModel)
+                    MarketPlaceView(viewModel: viewModel)
                         .tag(TabEnum.marketPlace)
                         .toolbarBackgroundVisibility(.visible, for: .tabBar)
                 }
@@ -62,5 +65,6 @@ extension Comparable {
 }
 
 #Preview {
-    RootView()
+    let loader = MockService().mockLoader()
+    RootView(rootViewModel: RootViewModel(loader: loader))
 }

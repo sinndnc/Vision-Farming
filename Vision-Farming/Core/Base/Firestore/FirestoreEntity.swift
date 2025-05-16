@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 protocol FirestoreEntity: Codable ,Hashable, Identifiable {
-    var id: String? { get set }
+    var id: String? { get }
 }

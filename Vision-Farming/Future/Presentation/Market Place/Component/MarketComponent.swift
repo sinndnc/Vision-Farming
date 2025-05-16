@@ -13,17 +13,17 @@ struct MarketComponent: View {
     
     var body: some View {
         Section {
-            switch viewModel.selectedTab {
+            switch viewModel.currentTab {
             case .all:
-                MarketAllPage()
+                MarketAllPage(products: viewModel.products)
             case .vegetables:
-                VegetablesPage()
+                VegetablesPage(products: viewModel.products)
             case .fruits:
-                Fruitspage()
+                Fruitspage(products: viewModel.products)
             case .plants:
-                PlantsPage()
+                PlantsPage(products: viewModel.products)
             case .favorite:
-                FavoritesPage()
+                FavoritesPage(products: viewModel.products)
             }
         } header: {
             MarketTabWidget(viewModel: viewModel)
@@ -31,6 +31,3 @@ struct MarketComponent: View {
     }
 }
 
-#Preview {
-    MarketComponent(viewModel: .init())
-}

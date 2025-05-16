@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct PlantsPage: View {
+    
+    @State var products: [MarketProduct]
+    
     var body: some View {
-        Section{
+        Section {
             Grid{
-                GridRow {
-                    MarketWidget()
-                    MarketWidget()
-                }
-                GridRow {
-                    MarketWidget()
-                    MarketWidget()
+                let filteredProducts = products.filter{ $0.category == .plants}
+                ForEach(filteredProducts.chunked(into: 2), id: \.self) { rowProducts in
+                    GridRow {
+                        ForEach(rowProducts) { product in
+                            ProductWidget(product: product)
+                        }
+                    }
                 }
             }
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
     }
-}
-
-#Preview {
-    PlantsPage()
 }

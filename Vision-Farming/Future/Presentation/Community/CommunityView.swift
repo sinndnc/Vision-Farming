@@ -12,7 +12,7 @@ import SlidingTabView
 struct CommunityView: View {
     
     @State private var isPresented: Bool = false
-    @StateObject var viewModel : CommunityViewModel = CommunityViewModel()
+    @StateObject public var viewModel : CommunityViewModel
     
     var body: some View {
         NavigationStack {
@@ -66,10 +66,3 @@ struct CommunityView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack{
-        CommunityView()
-    }
-}
-

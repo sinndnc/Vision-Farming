@@ -14,6 +14,7 @@ struct FirebaseConstant {
     static let crops = "crops"
     static let posts = "posts"
     static let farms = "farms"
+    static let categories = "categories"
     
     static let owner_id = "owner_id"
     static let author_id = "author_id"

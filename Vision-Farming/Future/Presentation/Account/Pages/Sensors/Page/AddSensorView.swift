@@ -88,6 +88,3 @@ struct AddSensorView: View {
     }
 }
 
-#Preview {
-    AddSensorView(viewModel: AccountViewModel())
-}

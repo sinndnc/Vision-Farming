@@ -14,7 +14,6 @@ final class ChatViewModel : ObservableObject {
     @Published var messages : [ChatMessage] = []
     @Published var isDocumentPickerPresented : Bool = false
     
-    @Inject var aIChatBotService : ChatBotServiceProtocol
     
     init() {
             self.messages.append(self.initalMessage)

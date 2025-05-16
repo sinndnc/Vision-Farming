@@ -6,40 +6,34 @@
 //
 
 import SwiftUI
-import MapKit
 
 struct FieldsView: View {
     
     @StateObject var viewModel : AccountViewModel
-    @State private var cameraPosition: MapCameraPosition = .automatic
     
     var body: some View {
         GeometryReader { geoProxy in
             List{
                 ForEach(viewModel.farms){ farm in
                     Section{
-                        let filteredFields = viewModel.fields.filter { $0.owner_farm == farm.id }
-                        ForEach(filteredFields){ field in
-                            NavigationLink{
-                                FieldDetailView()
-                            }label:{
-                                FieldItemWidget(
-                                    field: field,
-                                    geoProxy: geoProxy,
-                                    cameraPosition: $cameraPosition
-                                )
-                            }
+                        FieldItemComponent(
+                            farm: farm,
+                            geoProxy: geoProxy,
+                            viewModel: viewModel
+                        )
+                    } footer:{
+                        HStack{
+                            Spacer()
+                            Text("Size (m²)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Text("14.758")
+                                .font(.subheadline)
                         }
-                    }header:{
-                        Text(farm.name)
                     }
                 }
             }
             .navigationTitle("Fields")
         }
     }
-}
-
-#Preview {
-    FieldsView(viewModel: AccountViewModel())
 }

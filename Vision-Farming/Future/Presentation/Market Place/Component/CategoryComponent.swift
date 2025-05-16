@@ -15,8 +15,8 @@ struct CategoryComponent : View {
         Section {
             ScrollView(.horizontal,showsIndicators: false){
                 HStack(spacing: 15){
-                    ForEach(0...4,id: \.self){ int in
-                        CategoryWidget(viewModel:viewModel)
+                    ForEach(viewModel.categories,id: \.self){ category in
+                        CategoryWidget(category:category)
                     }
                 }
                 .padding(.horizontal)

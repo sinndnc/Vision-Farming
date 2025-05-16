@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24E263" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CategoryEntity" representedClassName="CategoryEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CropEntity" representedClassName="CropEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="coordinates" optional="YES" attributeType="Transformable" valueTransformerName="GeoPointTransformer"/>
+        <attribute name="expected_harvest_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="owner_id" optional="YES" attributeType="String"/>
+        <attribute name="planted_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FieldEntity" inverseName="crops" inverseEntity="FieldEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="crops" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="FarmEntity" representedClassName="FarmEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="owner_id" optional="YES" attributeType="String"/>
+        <relationship name="fields" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FieldEntity" inverseName="farm" inverseEntity="FieldEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="farms" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="FieldEntity" representedClassName="FieldEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="coordinates" optional="YES" attributeType="Transformable" valueTransformerName="GeoPointTransformer"/>
+        <attribute name="harvest_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="owner_farm" optional="YES" attributeType="String"/>
+        <attribute name="planted_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="crops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CropEntity" inverseName="field" inverseEntity="CropEntity"/>
+        <relationship name="farm" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FarmEntity" inverseName="fields" inverseEntity="FarmEntity"/>
+        <relationship name="sensors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SensorEntity" inverseName="field" inverseEntity="SensorEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="fields" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="SensorEntity" representedClassName="SensorEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="last_reading" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="last_updated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="owner_field" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="unit" optional="YES" attributeType="String"/>
+        <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FieldEntity" inverseName="sensors" inverseEntity="FieldEntity"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="sensors" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="surname" optional="YES" attributeType="String"/>
+        <relationship name="crops" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CropEntity" inverseName="user" inverseEntity="CropEntity"/>
+        <relationship name="farms" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FarmEntity" inverseName="user" inverseEntity="FarmEntity"/>
+        <relationship name="fields" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FieldEntity" inverseName="user" inverseEntity="FieldEntity"/>
+        <relationship name="sensors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SensorEntity" inverseName="user" inverseEntity="SensorEntity"/>
+    </entity>
+</model>

@@ -11,67 +11,11 @@ import Combine
 class CatalogViewModel: ObservableObject {
     
     @Published var categories: [Category] = []
-    @Published var selectedItem: CategoryItem? = nil
-    @Published var subCategories: [SubCategory] = []
-    @Published var categoryItems: [CategoryItem] = []
+    @Published var subCategories: [Category] = []
     
     @Published var isLoading = false
     @Published var errorMessage: String?
     
     var cancellables = Set<AnyCancellable>()
-    @Inject var catalogService : CatalogRemoteServiceProtocol
-    
-    func fetchCategories() {
-        isLoading = true
-        errorMessage = nil
-        catalogService.fetchCategories()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                self.isLoading = false
-                if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
-                }
-            }, receiveValue: { categories in
-                self.isLoading = false
-                self.categories = categories
-            })
-            .store(in: &cancellables)
-    }
-    
-    func fetchSubcategories(category: Category) {
-        isLoading = true
-        errorMessage = nil
-        
-        catalogService.fetchSubcategories(category: category)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                self.isLoading = false
-                if case .failure(let error) = completion {
-                    print(error)
-                    self.errorMessage = error.localizedDescription
-                }
-            }, receiveValue: { subCategories in
-                self.isLoading = false
-                self.subCategories = subCategories
-            })
-            .store(in: &cancellables)
-    }
-    
-    func fetchSubCategoryItems(category: Category,subCategory : SubCategory) {
-        isLoading = true
-        errorMessage = nil
-        
-        catalogService.fetchSubCategoryItems(category: category, subcategory: subCategory)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                self.isLoading = false
-                if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
-                }
-            }, receiveValue: { categoryItems in
-                self.isLoading = false
-                self.categoryItems = categoryItems
-            })
-            .store(in: &cancellables)
-    }
+
 }
