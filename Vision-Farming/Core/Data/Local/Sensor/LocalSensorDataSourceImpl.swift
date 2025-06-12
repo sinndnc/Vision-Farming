@@ -23,17 +23,24 @@ final class LocalSensorDataSourceImpl : LocalSensorDataSource{
     
     func fetch() -> AnyPublisher<[Sensor], Error> {
         Future { promise in
-            let request: NSFetchRequest<SensorEntity> = SensorEntity.fetchRequest()
-            do {
-                let sensors = try self.context.fetch(request)
-                var updatedSensors : [Sensor] = []
-                sensors.forEach { entity in
-                    let model = SensorMapper.toModel(entity)
-                    updatedSensors.append(model)
+            self.context.perform{
+                let request: NSFetchRequest<SensorEntity> = SensorEntity.fetchRequest()
+                request.relationshipKeyPathsForPrefetching = ["history"]
+                do {
+                    let sensors = try self.context.fetch(request)
+                    var updatedSensors : [Sensor] = []
+                    for entity in sensors {
+                        guard let historiesSet = entity.history as? Set<SensorHistoryEntity> else { continue }
+                        let history = historiesSet.compactMap { entity in
+                            return SensorHistoryMapper.toModel(entity)
+                        }
+                        let model = SensorMapper.toModel(entity,histories: history)
+                        updatedSensors.append(model)
+                    }
+                    promise(.success(updatedSensors))
+                } catch {
+                    promise(.failure(error))
                 }
-                promise(.success(updatedSensors))
-            } catch {
-                promise(.failure(error))
             }
         }
         .eraseToAnyPublisher()

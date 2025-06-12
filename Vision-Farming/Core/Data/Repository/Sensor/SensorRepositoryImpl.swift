@@ -40,7 +40,6 @@ final class SensorRepositoryImpl : SensorRepository{
                     if !sensors.isEmpty{
                         self.local.save(sensors)
                     }
-                    
                     return Just(sensors)
                         .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
@@ -49,11 +48,12 @@ final class SensorRepositoryImpl : SensorRepository{
                 .mapError { NetworkErrorCallback.remote($0) }
                 .eraseToAnyPublisher()
             
-        case .staleWhileRevalidate(let ttl):
-            Logger.log("♻️ Using staleWhileRevalidate policy on Crops")
+        case .staleWhileRevalidate(_):
+            Logger.log("♻️ Using staleWhileRevalidate policy on Sensors")
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/
             
             let localStream = local.fetch()
+                .map{ return Array(Set($0)) }
                 .mapError { NetworkErrorCallback.local($0) }
             
             if useRemote {
@@ -65,7 +65,7 @@ final class SensorRepositoryImpl : SensorRepository{
                         if !sensors.isEmpty{
                             self.local.save(sensors)
                         }
-                        return Just(sensors)
+                        return Just(Array(Set(sensors)))
                             .setFailureType(to: Error.self)
                             .eraseToAnyPublisher()
                     }
@@ -73,20 +73,20 @@ final class SensorRepositoryImpl : SensorRepository{
                 
                 return localStream
                     .flatMap { localSensors -> AnyPublisher<[Sensor], NetworkErrorCallback> in
-                        let localPublisher = Just(localSensors)
+                        _ = Just(localSensors)
                             .setFailureType(to: NetworkErrorCallback.self)
                             .eraseToAnyPublisher()
                         
-                        let remotePublisher = remoteStream
+                        _ = remoteStream
                             .catch { error -> Empty<[Sensor], NetworkErrorCallback> in
                                 Logger.log("⚠️ Remote fetch failed: \(error.localizedDescription)")
                                 return .init()
                             }
                             .eraseToAnyPublisher()
                         
-                        return localPublisher
-                            .append(remotePublisher)
-                            .eraseToAnyPublisher()
+                        return localStream
+                               .append(remoteStream)
+                               .eraseToAnyPublisher()
                     }
                     .eraseToAnyPublisher()
             } else {
@@ -95,6 +95,5 @@ final class SensorRepositoryImpl : SensorRepository{
             }
         }
     }
-    
     
 }

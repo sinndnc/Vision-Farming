@@ -63,4 +63,16 @@ final class RemoteCropDataSourceImpl : RemoteCropDataSource {
         }
         .eraseToAnyPublisher()
     }
+    
+    
+    func add(_ crop: Crop) {
+        do {
+            try firestore
+                .collection(FirebaseConstant.crops)
+                .addDocument(from: crop)
+        } catch (let error) {
+            Logger.log("\(error)")
+        }
+    }
+    
 }

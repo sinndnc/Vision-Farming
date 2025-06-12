@@ -51,6 +51,7 @@ final class LocalCropDataSourceImpl : LocalCropDataSource{
         let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CropEntity.fetchRequest()
         let batchDelete1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
         try? context.execute(batchDelete1)
+            
     }
     
 }

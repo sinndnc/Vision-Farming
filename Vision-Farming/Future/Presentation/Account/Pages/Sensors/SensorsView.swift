@@ -59,15 +59,15 @@ struct SensorsView: View {
         .navigationTitle("Sensors")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button{
+                Button("", systemImage: "plus") {
                     isPresented.toggle()
-                }label:{
-                    Image(systemName: "plus")
                 }
             }
         }
         .sheet(isPresented: $isPresented) {
-            AddSensorView(viewModel:viewModel)
+            NavigationStack{
+                SensorAddView(farms: viewModel.farms,fields:viewModel.fields)
+            }
         }
     }
 }

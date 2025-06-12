@@ -44,17 +44,29 @@
 		998824D72D8199FD00BBC924 /* Exceptions for "Vision-Farming" folder in "Vision-Farming" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Core/Extension/Notification+Extensions.swift",
 				Info.plist,
 			);
 			target = 99665C032D347E0A00FCF579 /* Vision-Farming */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		9956E77D2DEF8B4500008276 /* Exceptions for "Vision-Farming" folder in "Copy Bundle Resources" phase from "Vision-Farming" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 99665C022D347E0A00FCF579 /* Resources */;
+			membershipExceptions = (
+				"Core/Extension/Notification+Extensions.swift",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		99665C062D347E0A00FCF579 /* Vision-Farming */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				998824D72D8199FD00BBC924 /* Exceptions for "Vision-Farming" folder in "Vision-Farming" target */,
+				9956E77D2DEF8B4500008276 /* Exceptions for "Vision-Farming" folder in "Copy Bundle Resources" phase from "Vision-Farming" target */,
 			);
 			path = "Vision-Farming";
 			sourceTree = "<group>";

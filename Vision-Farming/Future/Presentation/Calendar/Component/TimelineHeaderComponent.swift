@@ -56,6 +56,13 @@ struct TimelineHeaderComponent: View {
 
 #Preview {
     GeometryReader(content: { geometry in
-        TimelineHeaderComponent(geo: geometry,viewModel: CalendarViewModel())
+        TimelineHeaderComponent(
+            geo: geometry,
+            viewModel: CalendarViewModel(
+            rootViewModel: RootViewModel(
+                    loader: MockService().mockLoader()
+                )
+            )
+        )
     })
 }

@@ -9,4 +9,6 @@ import Combine
 
 protocol RemoteCropDataSource {
     func fetch(owner_id: String) -> AnyPublisher<[Crop], Error>
+    
+    func add(_ crop: Crop)
 }

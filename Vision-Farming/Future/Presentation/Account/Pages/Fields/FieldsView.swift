@@ -22,18 +22,18 @@ struct FieldsView: View {
                             viewModel: viewModel
                         )
                     } footer:{
-                        HStack{
-                            Spacer()
-                            Text("Size (m²)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            Text("14.758")
-                                .font(.subheadline)
-                        }
+                        Text("Click to view more details")
                     }
                 }
             }
             .navigationTitle("Fields")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("", systemImage: "plus") {
+                        
+                    }
+                }
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ final class RemoteFarmDataSourceImpl : RemoteFarmDataSource{
             self.firestore
                 .collection(FirebaseConstant.farms)
                 .whereField(FirebaseConstant.owner_id, isEqualTo: owner_id)
-                .addSnapshotListener { [weak self] snapshot, error in
+                .addSnapshotListener { snapshot, error in
                     
                     if let error = error { promise(.failure(error))}
                     

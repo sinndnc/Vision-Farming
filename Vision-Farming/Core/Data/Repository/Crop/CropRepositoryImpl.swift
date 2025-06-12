@@ -47,7 +47,7 @@ final class CropRepositoryImpl: CropRepository {
                 .mapError { NetworkErrorCallback.remote($0) }
                 .eraseToAnyPublisher()
             
-        case .staleWhileRevalidate(let ttl):
+        case .staleWhileRevalidate(_):
             Logger.log("♻️ Using staleWhileRevalidate policy on Crops")
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/
             
@@ -92,5 +92,10 @@ final class CropRepositoryImpl: CropRepository {
                 return localStream.eraseToAnyPublisher()
             }
         }
+    }
+    
+    
+    func add(_ crop: Crop) {
+        remote.add(crop)
     }
 }

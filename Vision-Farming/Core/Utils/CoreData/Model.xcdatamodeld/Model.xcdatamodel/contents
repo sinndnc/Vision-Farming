@@ -40,7 +40,7 @@
     </entity>
     <entity name="SensorEntity" representedClassName="SensorEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="last_reading" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="last_reading" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="last_updated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="owner_field" optional="YES" attributeType="String"/>
@@ -48,7 +48,14 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="unit" optional="YES" attributeType="String"/>
         <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FieldEntity" inverseName="sensors" inverseEntity="FieldEntity"/>
+        <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SensorHistoryEntity" inverseName="sensors" inverseEntity="SensorHistoryEntity"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="sensors" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="SensorHistoryEntity" representedClassName="SensorHistoryEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="sensors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SensorEntity" inverseName="history" inverseEntity="SensorEntity"/>
     </entity>
     <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>

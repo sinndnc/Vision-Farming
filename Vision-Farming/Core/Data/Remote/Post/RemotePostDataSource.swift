@@ -11,7 +11,7 @@ import Combine
 
 protocol RemotePostDataSource {
     
-    func fetch() -> AnyPublisher<[Post], Error>
+    func fetch() -> AnyPublisher<[Post], NetworkErrorCallback>
     
     mutating func cancelAllCancellables()
 }

@@ -32,12 +32,7 @@ final class ProductRepositoryImpl : ProductRepository{
         case .networkOnly:
             Logger.log("🌐 Using networkOnly policy")
             return remote.fetch()
-                .flatMap { [weak self] products in
-                    guard let self = self else {
-                        return Just(products)
-                            .setFailureType(to: Error.self)
-                            .eraseToAnyPublisher()
-                    }
+                .flatMap {  products in
                     //                    self.local.save(products)
                     
                     return Just(products)
@@ -48,8 +43,8 @@ final class ProductRepositoryImpl : ProductRepository{
                 .mapError { NetworkErrorCallback.remote($0) }
                 .eraseToAnyPublisher()
             
-        case .staleWhileRevalidate(let ttl):
-            Logger.log("♻️ Using staleWhileRevalidate policy on Crops")
+        case .staleWhileRevalidate(_):
+            Logger.log("♻️ Using staleWhileRevalidate policy on Products")
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/
             
             if useRemote {

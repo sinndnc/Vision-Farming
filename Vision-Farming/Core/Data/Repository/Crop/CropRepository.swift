@@ -11,4 +11,5 @@ import FirebaseFirestore
 
 protocol CropRepository {
     func listen(owner_id: String, policy: CachePolicy) -> AnyPublisher<[Crop], NetworkErrorCallback>
+    func add(_ crop: Crop)
 }

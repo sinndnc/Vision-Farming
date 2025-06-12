@@ -12,10 +12,13 @@ import PhotosUI
 struct AccountView: View {
     
     @State private var selectedItem: PhotosPickerItem? = nil
+    @State public var navigationPath : NavigationPath = NavigationPath()
+    
     @StateObject public var viewModel : AccountViewModel
+    @EnvironmentObject public var rootViewModel : RootViewModel
     
     var body: some View{
-        NavigationStack(path: $viewModel.accNavigationPath){
+        NavigationStack(path: $navigationPath){
             List{
                 Section{
                     NavigationLink{
@@ -100,7 +103,8 @@ struct AccountView: View {
             .navigationDestination(for: SectionEnum.self) { type in
                 switch type {
                 case .myCrops:
-                    CropsView()
+                    let cropViewModel = CropViewModel(rootViewModel: rootViewModel)
+                    CropsView(viewModel: cropViewModel)
                 case .myFarms:
                     FarmsView(viewModel: viewModel)
                 case .myFields:

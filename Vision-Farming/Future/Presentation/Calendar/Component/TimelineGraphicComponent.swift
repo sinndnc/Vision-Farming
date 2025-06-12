@@ -63,6 +63,13 @@ func groupOverlappingReminders(_ reminders: [Reminder]) -> [Reminder: [Reminder]
 
 #Preview {
     GeometryReader(content: { geometry in
-        TimelineGraphicComponent(geo: geometry, viewModel: CalendarViewModel())
+        TimelineGraphicComponent(
+            geo: geometry,
+            viewModel: CalendarViewModel(
+                rootViewModel: RootViewModel(
+                    loader: MockService().mockLoader()
+                )
+            )
+        )
     })
 }

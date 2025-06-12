@@ -18,15 +18,17 @@ enum MarketPlaceTab : String , CaseIterable {
 
 final class MarketPlaceViewModel : BaseViewModel {
     
-    @Published var categories : [Category] = []
     @Published var currentTab : MarketPlaceTab = .all
     
+    @Published public var error : NetworkErrorCallback?
     @Published public var products : [MarketProduct] = []
     
     init(rootViewModel : RootViewModel) {
         super.init()
         rootViewModel.$products
             .assign(to: &$products)
+        rootViewModel.$error
+            .assign(to: &$error)
     }
     
 }

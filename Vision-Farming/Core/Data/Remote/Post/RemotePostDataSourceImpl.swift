@@ -19,13 +19,17 @@ final class RemotePostDataSourceImpl : RemotePostDataSource{
         self.storage = storage
     }
     
-    func fetch() -> AnyPublisher<[Post], any Error> {
+    func fetch() -> AnyPublisher<[Post], NetworkErrorCallback> {
         Future{ promise in
             self.firestore
                 .collection(FirebaseConstant.posts)
                 .addSnapshotListener { snapshot, error in
                     if let error = error {
-                        promise(.failure(error))
+                        promise(.failure(.remote(error)))
+                    }
+                    
+                    if snapshot?.metadata.isFromCache == true {
+                        promise(.failure(.noConnection))
                     }
                     
                     let posts = snapshot?.documents.compactMap {

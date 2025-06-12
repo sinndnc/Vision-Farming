@@ -35,8 +35,8 @@ final class PostRepositoryImpl : PostRepository{
                 .mapError { NetworkErrorCallback.remote($0) }
                 .eraseToAnyPublisher()
             
-        case .staleWhileRevalidate(let ttl):
-            Logger.log("♻️ Using staleWhileRevalidate policy on Crops")
+        case .staleWhileRevalidate(_):
+            Logger.log("♻️ Using staleWhileRevalidate policy on Posts")
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/
             
             if useRemote {
@@ -50,8 +50,7 @@ final class PostRepositoryImpl : PostRepository{
                 return remotePublisher
                     .eraseToAnyPublisher()
             }else{
-                return Just([])
-                    .setFailureType(to: NetworkErrorCallback.self)
+                return Fail<[Post], NetworkErrorCallback>(error: NetworkErrorCallback.noConnection)
                     .eraseToAnyPublisher()
             }
         }

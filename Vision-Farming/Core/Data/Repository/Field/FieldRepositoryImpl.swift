@@ -49,8 +49,8 @@ final class FieldRepositoryImpl : FieldRepository{
                 .mapError { NetworkErrorCallback.remote($0) }
                 .eraseToAnyPublisher()
             
-        case .staleWhileRevalidate(let ttl):
-            Logger.log("♻️ Using staleWhileRevalidate policy on Crops")
+        case .staleWhileRevalidate(_):
+            Logger.log("♻️ Using staleWhileRevalidate policy on Fields")
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/
             
             let localStream = local.fetch()

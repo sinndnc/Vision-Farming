@@ -17,4 +17,5 @@ struct Crop : FirestoreEntity{
     var planted_date : Date
     var coordinates : [GeoPoint]
     var expected_harvest_date : Date
+    
 }

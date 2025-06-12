@@ -20,12 +20,15 @@ final class CommunityViewModel : BaseViewModel {
     
     @Published var user : User?
     @Published var posts : [Post] = []
+    @Published var error : NetworkErrorCallback?
     @Published var selectedTab : CommunityTab = .trending
     
     init(rootViewModel : RootViewModel){
         super.init()
         rootViewModel.$posts
             .assign(to: &$posts)
+        rootViewModel.$error
+            .assign(to: &$error)
     }
     
     private func calculateTrendingScores() {

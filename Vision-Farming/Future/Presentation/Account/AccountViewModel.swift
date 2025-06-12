@@ -6,12 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-import FirebaseAuth
-import Combine
-import CoreData
-import Supabase
-
 
 final class AccountViewModel : BaseViewModel {
     
@@ -22,7 +16,6 @@ final class AccountViewModel : BaseViewModel {
     @Published public var sensors: [Sensor] = []
     
     @Published public var sections : [SectionItem] = []
-    @Published public var accNavigationPath = NavigationPath()
     
     init(rootViewModel : RootViewModel) {
         super.init()

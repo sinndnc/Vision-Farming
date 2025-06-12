@@ -41,10 +41,7 @@ final class MockService{
             remote: RemoteSensorDataSourceImpl(firestore: .firestore()),
             networkMonitor: NetworkMonitor()
         )
-        let categoryRepo = CategoryRepositoryImpl(
-            local: LocalCategoryDataSourceImpl(),
-            remote: RemoteCategoryDataSourceImpl(firestore: .firestore(), storage: storage),
-            networkMonitor: NetworkMonitor())
+      
         let productRepo = ProductRepositoryImpl(
             remote: RemoteProductDataSourceImpl(firestore: .firestore(), storage: storage),
             networkMonitor: NetworkMonitor())
@@ -52,6 +49,10 @@ final class MockService{
             remote: RemotePostDataSourceImpl(firestore: .firestore(), storage: storage),
             networkMonitor: NetworkMonitor()
         )
+        let transactionsRepo = TransactionRepositoryImpl(
+            remote: RemoteTransactionDataSourceImpl(firestore: .firestore()),
+            networkMonitor: NetworkMonitor())
+        
         return DataLoader(
             userRepository: userRepo,
             cropRepository: cropRepo,
@@ -60,7 +61,7 @@ final class MockService{
             fieldRepository: fieldRepo,
             sensorRepository: sensorRepo,
             productRepository: productRepo,
-            categoryRepository: categoryRepo
+            transactionRepository: transactionsRepo
         )
     }
 }

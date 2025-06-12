@@ -7,8 +7,18 @@
 
 import Foundation
 
-final class DashboardViewModel : ObservableObject {
+final class DashboardViewModel : BaseViewModel{
+    
+    @Published public var user : User?
+    @Published public var error : NetworkErrorCallback?
     
     
+    init(rootViewModel : RootViewModel) {
+        super.init()
+        rootViewModel.$user
+            .assign(to: &$user)
+        rootViewModel.$error
+            .assign(to: &$error)
+    }
     
 }

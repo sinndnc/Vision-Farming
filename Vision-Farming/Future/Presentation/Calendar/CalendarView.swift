@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @StateObject var viewModel : CalendarViewModel = .init()
+    @StateObject var viewModel : CalendarViewModel
     
     var body: some View {
         NavigationStack{
@@ -34,8 +34,4 @@ struct CalendarView: View {
             .navigationTitle("December 2024")
         }
     }
-}
-
-#Preview {
-    CalendarView()
 }

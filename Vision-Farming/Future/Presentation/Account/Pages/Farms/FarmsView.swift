@@ -22,14 +22,14 @@ struct FarmsView: View {
                             FarmItemWidget(farm: farm, geoProxy: geoProxy)
                         }
                     } footer:{
-                        HStack{
-                            Spacer()
-                            Text("Size (m²)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            Text("223.3223")
-                                .font(.subheadline)
-                        }
+                        Text("Click to view more details")
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("", systemImage: "plus") {
+                        
                     }
                 }
             }

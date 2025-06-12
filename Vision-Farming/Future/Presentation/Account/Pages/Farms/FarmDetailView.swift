@@ -15,7 +15,7 @@ struct FarmDetailView: View {
     
     var body: some View {
         List{
-            Section(header: Text("Show on Maps")){
+            Section{
                 Map{
                     Marker(coordinate: farm.location.toCLocationCoordinate2D) {}
                 }

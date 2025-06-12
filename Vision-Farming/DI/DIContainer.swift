@@ -58,11 +58,6 @@ struct DIContainer {
             remote: RemoteSensorDataSourceImpl(firestore: firestore),
             networkMonitor: networkMonitor
         )
-        let categoryRepository = CategoryRepositoryImpl(
-            local: LocalCategoryDataSourceImpl(),
-            remote: RemoteCategoryDataSourceImpl(firestore: firestore,storage: storage),
-            networkMonitor: networkMonitor
-        )
         let productRepository = ProductRepositoryImpl(
             remote: RemoteProductDataSourceImpl(firestore: firestore,storage: storage),
             networkMonitor: networkMonitor
@@ -72,6 +67,10 @@ struct DIContainer {
             networkMonitor: networkMonitor
         )
         
+        let transactionsRepository = TransactionRepositoryImpl(
+            remote: RemoteTransactionDataSourceImpl(firestore: firestore),
+            networkMonitor: networkMonitor)
+        
         let loader = DataLoader(
             userRepository: userRepository,
             cropRepository: cropRepository,
@@ -80,7 +79,7 @@ struct DIContainer {
             fieldRepository: fieldRepository,
             sensorRepository: sensorRepository,
             productRepository: productRepository,
-            categoryRepository: categoryRepository
+            transactionRepository: transactionsRepository
         )
         
         self.rootViewModel = RootViewModel(loader: loader)

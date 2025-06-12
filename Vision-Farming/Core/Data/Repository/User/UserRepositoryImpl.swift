@@ -40,7 +40,7 @@ final class UserRepositoryImpl : UserRepository {
                 .map { Optional($0) }
                 .eraseToAnyPublisher()
 
-        case .staleWhileRevalidate(let ttl):
+        case .staleWhileRevalidate(_):
             Logger.log("♻️ Using staleWhileRevalidate policy on Users")
             
             let useRemote = networkMonitor.isConnected/* && local.isCacheExpired(ttl: ttl)*/

@@ -18,17 +18,34 @@ struct CommunityView: View {
         NavigationStack {
             VStack(spacing: 0){
                 CommunityTabWidget(viewModel: viewModel)
-                TabView(selection: $viewModel.selectedTab) {
-                    TrendingPage(viewModel: viewModel)
-                        .tag(CommunityTab.trending)
-                    ForYouPage(viewModel: viewModel)
-                        .tag(CommunityTab.forYou)
-                    FollowingPage(viewModel: viewModel)
-                        .tag(CommunityTab.following)
-                }
-                .background(.gray.opacity(0.2))
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .indexViewStyle(.page(backgroundDisplayMode: .never))
+                    TabView(selection: $viewModel.selectedTab) {
+                        if let error = viewModel.error{
+                            switch error {
+                            case .local(let error):
+                                Text("\(error.localizedDescription)")
+                                    .foregroundStyle(.gray)
+                            case .remote(let error):
+                                Text("\(error.localizedDescription)")
+                                    .foregroundStyle(.gray)
+                            case .noData:
+                                Text("No Data 😔")
+                                    .foregroundStyle(.gray)
+                            case .noConnection:
+                                Text("No Internet Connection 😔")
+                                    .foregroundStyle(.gray)
+                            }
+                        }else{
+                            TrendingPage(viewModel: viewModel)
+                                .tag(CommunityTab.trending)
+                            ForYouPage(viewModel: viewModel)
+                                .tag(CommunityTab.forYou)
+                            FollowingPage(viewModel: viewModel)
+                                .tag(CommunityTab.following)
+                        }
+                    }
+                    .background(.gray.opacity(0.2))
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .indexViewStyle(.page(backgroundDisplayMode: .never))
             }
             .navigationTitle("Community")
             .navigationBarTitleDisplayMode(.inline)
